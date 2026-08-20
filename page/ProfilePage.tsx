@@ -1,9 +1,10 @@
 import React from "react";
-import { User, Mail, Shield, Clock } from "lucide-react";
-import { User as UserType } from "../types";
+import { User, Mail, Shield } from "lucide-react";
 import { Navigate } from "react-router-dom";
+import { useApp } from "../context/AppContext";
 
-const ProfilePage = ({ currentUser }: { currentUser: UserType | null }) => {
+const ProfilePage = () => {
+    const { currentUser } = useApp();
     if (!currentUser) return <Navigate to="/login" replace />;
 
     return (

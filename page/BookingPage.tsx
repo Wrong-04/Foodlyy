@@ -14,7 +14,8 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { dbService } from "../databaseService";
-import { Booking, Table, User as UserType } from "../types";
+import { Booking, Table } from "../types";
+import { useApp } from "../context/AppContext";
 
 const WEEKEND_SLOTS = [
   "08:00",
@@ -81,7 +82,8 @@ const PERIOD_RANGES: Record<
   [number, number]
 > = { morning: [8, 12], afternoon: [12, 17], evening: [17, 24] };
 
-const BookingPage = ({ currentUser }: { currentUser: UserType | null }) => {
+const BookingPage = () => {
+  const { currentUser } = useApp();
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);

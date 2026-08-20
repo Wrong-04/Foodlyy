@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Package, Calendar, DollarSign, ChevronRight, CheckCircle2, Clock } from "lucide-react";
-import { Order, User as UserType } from "../types";
+import { Package, ChevronRight, CheckCircle2, Clock } from "lucide-react";
+import { Order } from "../types";
 import { Navigate, useNavigate, useLocation } from "react-router-dom";
 import { dbService } from "../databaseService";
+import { useApp } from "../context/AppContext";
 
-const OrderHistoryPage = ({ currentUser }: { currentUser: UserType | null }) => {
+const OrderHistoryPage = () => {
+    const { currentUser } = useApp();
     const navigate = useNavigate();
     const location = useLocation();
     const [orders, setOrders] = useState<Order[]>([]);

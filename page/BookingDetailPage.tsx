@@ -17,8 +17,9 @@ import {
   Clock3,
 } from "lucide-react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Booking, User as UserType } from "../types";
+import { Booking } from "../types";
 import { dbService } from "../databaseService";
+import { useApp } from "../context/AppContext";
 
 const STATUS_INFO: Record<
   string,
@@ -91,11 +92,8 @@ const DetailItem = ({
   </div>
 );
 
-const BookingDetailPage = ({
-  currentUser,
-}: {
-  currentUser: UserType | null;
-}) => {
+const BookingDetailPage = () => {
+  const { currentUser } = useApp();
   const { bookingId } = useParams<{ bookingId: string }>();
   const navigate = useNavigate();
   const [booking, setBooking] = useState<Booking | null>(null);

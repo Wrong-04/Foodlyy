@@ -17,20 +17,12 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { CartItem, User, Order } from "../types";
+import { Order } from "../types";
 import { dbService } from "../databaseService";
+import { useApp } from "../context/AppContext";
 
-interface CheckoutPageProps {
-  cart: CartItem[];
-  currentUser: User | null;
-  onCheckoutSuccess?: () => void;
-}
-
-const CheckoutPage = ({
-  cart,
-  currentUser,
-  onCheckoutSuccess,
-}: CheckoutPageProps) => {
+const CheckoutPage = () => {
+  const { cart, currentUser, clearCart } = useApp();
   const navigate = useNavigate();
   const [isProcessing, setIsProcessing] = useState(false);
   const [deliveryOption, setDeliveryOption] = useState<"takeaway" | "delivery">(
@@ -93,9 +85,7 @@ const CheckoutPage = ({
       await dbService.addOrder(newOrder);
 
       // Clear cart
-      if (onCheckoutSuccess) {
-        onCheckoutSuccess();
-      }
+      clearCart();
 
       // Success animation delay
       setTimeout(() => {
