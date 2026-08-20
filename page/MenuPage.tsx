@@ -3,12 +3,10 @@ import { Search, LayoutDashboard, Plus, ChevronDown, Check } from 'lucide-react'
 import { useNavigate } from 'react-router-dom';
 import { dbService } from '../databaseService';
 import { Dish } from '../types';
+import { useApp } from '../context/AppContext';
 
-interface MenuPageProps {
-   addToCart: (d: Dish) => void;
-}
-
-const MenuPage = ({ addToCart }: MenuPageProps) => {
+const MenuPage = () => {
+   const { addToCart } = useApp();
    const navigate = useNavigate();
    const [dishes, setDishes] = useState<Dish[]>([]);
    const [filter, setFilter] = useState('All');
@@ -18,7 +16,7 @@ const MenuPage = ({ addToCart }: MenuPageProps) => {
    const [addedItems, setAddedItems] = useState<{ [key: number]: boolean }>({});
    const fmt = (p: number) => `${p.toLocaleString("vi-VN")}đ`;
 
-   const categories = ['All', 'Pizza', 'Burger', 'Main', 'Salad', 'Drink', 'Dessert'];
+   const categories = ['Tất cả', 'Món chính', 'Bún & Phở', 'Cơm', 'Khai vị', 'Đồ uống', 'Tráng miệng'];
 
    useEffect(() => {
       const loadDishes = async () => {
@@ -33,7 +31,7 @@ const MenuPage = ({ addToCart }: MenuPageProps) => {
    }, []);
 
    const filteredDishes = dishes.filter(dish => {
-      const matchesCategory = filter === 'All' || dish.category === filter;
+      const matchesCategory = filter === 'Tất cả' || dish.category === filter;
       const matchesSearch = dish.name.toLowerCase().includes(search.toLowerCase());
       return matchesCategory && matchesSearch;
    }).sort((a, b) => {

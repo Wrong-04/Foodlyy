@@ -15,10 +15,12 @@ import {
     ArrowRight,
 } from "lucide-react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Order, User } from "../types";
+import { Order } from "../types";
 import { dbService } from "../databaseService";
+import { useApp } from "../context/AppContext";
 
-const OrderDetailPage = ({ currentUser }: { currentUser: User | null }) => {
+const OrderDetailPage = () => {
+    const { currentUser } = useApp();
     const { orderId } = useParams<{ orderId: string }>();
     const navigate = useNavigate();
     const [order, setOrder] = useState<Order | null>(null);

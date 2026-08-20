@@ -14,18 +14,10 @@ import {
 } from "lucide-react";
 import { dbService } from "../databaseService";
 import { Dish } from "../types";
+import { useApp } from "../context/AppContext";
 
-interface FoodDetailPageProps {
-    addToCart: (dish: Dish, quantity: number) => void;
-    wishlist?: number[];
-    toggleWishlist?: (id: number) => void;
-}
-
-const FoodDetailPage = ({
-    addToCart,
-    wishlist = [],
-    toggleWishlist
-}: FoodDetailPageProps) => {
+const FoodDetailPage = () => {
+    const { addToCart, wishlist = [], toggleWishlist } = useApp();
     const { dishId } = useParams<{ dishId: string }>();
     const navigate = useNavigate();
     const [dish, setDish] = useState<Dish | null>(null);

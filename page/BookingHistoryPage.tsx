@@ -10,9 +10,10 @@ import {
   Clock3,
   XCircle,
 } from "lucide-react";
-import { Booking, User as UserType } from "../types";
+import { Booking } from "../types";
 import { Navigate, useNavigate } from "react-router-dom";
 import { dbService } from "../databaseService";
+import { useApp } from "../context/AppContext";
 
 const STATUS_INFO: Record<
   string,
@@ -42,11 +43,8 @@ const STATUS_INFO: Record<
 const getStatusInfo = (status: string) =>
   STATUS_INFO[status.toLowerCase()] ?? STATUS_INFO.pending;
 
-const BookingHistoryPage = ({
-  currentUser,
-}: {
-  currentUser: UserType | null;
-}) => {
+const BookingHistoryPage = () => {
+  const { currentUser } = useApp();
   const navigate = useNavigate();
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);

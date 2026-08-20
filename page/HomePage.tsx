@@ -3,14 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { Search, Plus, ChevronDown, Check, UtensilsCrossed, Heart, Star, Clock, LayoutDashboard } from "lucide-react";
 import { dbService } from "../databaseService";
 import { Dish } from "../types";
+import { useApp } from "../context/AppContext";
 
-interface HomePageProps {
-  addToCart: (d: Dish) => void;
-  wishlist?: number[];
-  toggleWishlist?: (id: number) => void;
-}
-
-const CATEGORIES = ["Pizza", "Burger", "Main", "Salad", "Drink", "Dessert"];
+const CATEGORIES = ["Món chính", "Bún & Phở", "Cơm", "Khai vị", "Đồ uống", "Tráng miệng"];
 const PRICE_RANGES = [
   { label: "All Prices", value: "all" },
   { label: "Under 100k", value: "under100" },
@@ -18,11 +13,8 @@ const PRICE_RANGES = [
   { label: "Over 200k", value: "over200" },
 ];
 
-const HomePage = ({
-  addToCart,
-  wishlist = [],
-  toggleWishlist,
-}: HomePageProps) => {
+const HomePage = () => {
+  const { addToCart, wishlist = [], toggleWishlist } = useApp();
   const navigate = useNavigate();
   const [dishes, setDishes] = useState<Dish[]>([]);
   const [search, setSearch] = useState("");
