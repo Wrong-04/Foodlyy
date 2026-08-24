@@ -7,8 +7,8 @@ import {
 import { useApp } from "../../context/AppContext";
 
 const NAV_LINKS = [
-  { label: "Home", path: "/" },
-  { label: "Menu", path: "/menu" },
+  { label: "Trang chủ", path: "/" },
+  { label: "Thực đơn", path: "/menu" },
   { label: "Đặt bàn", path: "/book-table" },
 ];
 
@@ -60,7 +60,7 @@ const Navbar = () => {
             className="relative flex items-center gap-2 px-4 py-2 rounded-xl font-semibold text-sm transition-all bg-primary/10 text-primary hover:bg-primary/20"
           >
             <ShoppingCart size={20} />
-            <span className="hidden sm:inline">Cart</span>
+            <span className="hidden sm:inline">Giỏ hàng</span>
             {cartCount > 0 && (
               <span className="absolute -top-1 -right-1 w-5 h-5 bg-primary text-white text-[10px] font-bold rounded-full flex items-center justify-center">
                 {cartCount > 9 ? "9+" : cartCount}
@@ -115,7 +115,7 @@ const Navbar = () => {
               onClick={() => navigate("/login")}
               className="hidden md:flex items-center px-4 py-2 bg-primary text-white text-sm font-bold rounded-xl hover:bg-primaryDark transition-all shadow-sm shadow-primary/20"
             >
-              Sign In
+              Đăng nhập
             </button>
           )}
 
@@ -175,7 +175,7 @@ const Navbar = () => {
               onClick={() => { navigate("/login"); setMenuOpen(false); }}
               className="w-full text-left px-4 py-3 rounded-xl bg-primary text-white font-bold text-sm"
             >
-              Sign In
+              Đăng nhập
             </button>
           )}
         </div>

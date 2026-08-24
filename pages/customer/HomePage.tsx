@@ -7,10 +7,10 @@ import { useApp } from "../../context/AppContext";
 
 const CATEGORIES = ["Món chính", "Bún & Phở", "Cơm", "Khai vị", "Đồ uống", "Tráng miệng"];
 const PRICE_RANGES = [
-  { label: "All Prices", value: "all" },
-  { label: "Under 100k", value: "under100" },
+  { label: "Tất cả giá", value: "all" },
+  { label: "Dưới 100k", value: "under100" },
   { label: "100k – 200k", value: "100to200" },
-  { label: "Over 200k", value: "over200" },
+  { label: "Trên 200k", value: "over200" },
 ];
 
 const HomePage = () => {
@@ -89,21 +89,21 @@ const HomePage = () => {
             {/* Text */}
             <div className="order-2 lg:order-1">
               <span className="inline-flex items-center gap-2 px-4 py-1.5 bg-primary/10 text-primary font-bold rounded-full text-sm mb-6">
-                🔥 20% OFF TODAY ONLY
+                🔥 GIẢM 20% CHỈ HÔM NAY
               </span>
               <h1 className="text-5xl lg:text-7xl font-extrabold text-textMain leading-tight mb-6">
-                Taste The <span className="text-primary">Difference</span>
+                Thưởng thức <span className="text-primary">Khác biệt</span>
               </h1>
               <p className="text-textSec text-lg mb-10 max-w-lg">
-                Explore a world of flavors with the freshest ingredients,
-                carefully selected by our top chefs.
+                Khám phá thế giới hương vị với nguyên liệu tươi ngon nhất,
+                được lựa chọn kỹ lưỡng bởi các đầu bếp hàng đầu của chúng tôi.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <button
                   onClick={() => navigate("/menu")}
                   className="px-8 py-4 bg-primary text-white font-bold rounded-2xl hover:bg-primaryDark transition-all shadow-lg shadow-primary/25 flex items-center justify-center gap-2"
                 >
-                  <UtensilsCrossed size={20} /> Order Now
+                  <UtensilsCrossed size={20} /> Đặt món ngay
                 </button>
                 <button
                   onClick={() =>
@@ -113,15 +113,15 @@ const HomePage = () => {
                   }
                   className="px-8 py-4 border-2 border-gray-200 text-textMain font-bold rounded-2xl hover:border-primary hover:text-primary transition-all flex items-center justify-center gap-2"
                 >
-                  View Menu
+                  Xem thực đơn
                 </button>
               </div>
               {/* Stats */}
               <div className="mt-12 flex gap-8">
                 {[
-                  ["5K+", "Happy Customers"],
-                  ["200+", "Dishes"],
-                  ["4.9⭐", "Rating"],
+                  ["5K+", "Khách hài lòng"],
+                  ["200+", "Món ăn"],
+                  ["4.9⭐", "Đánh giá"],
                 ].map(([val, label]) => (
                   <div key={label}>
                     <p className="text-2xl font-extrabold text-textMain">
@@ -137,7 +137,7 @@ const HomePage = () => {
             <div className="order-1 lg:order-2 relative">
               <img
                 src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=900&q=80"
-                alt="Delicious Food"
+                alt="Món ăn ngon"
                 className="w-full rounded-3xl object-cover aspect-square drop-shadow-2xl"
               />
               {/* Floating badges */}
@@ -147,9 +147,9 @@ const HomePage = () => {
                 </div>
                 <div>
                   <p className="text-[10px] text-textSec font-bold uppercase">
-                    Fast Delivery
+                    Giao hàng nhanh
                   </p>
-                  <p className="font-extrabold text-sm">Under 20 mins</p>
+                  <p className="font-extrabold text-sm">Dưới 20 phút</p>
                 </div>
               </div>
               <div className="absolute bottom-6 left-4 bg-white px-4 py-3 rounded-2xl shadow-xl flex items-center gap-3">
@@ -158,7 +158,7 @@ const HomePage = () => {
                 </div>
                 <div>
                   <p className="text-[10px] text-textSec font-bold uppercase">
-                    Rating
+                    Đánh giá
                   </p>
                   <p className="font-extrabold text-sm">4.9 / 5.0</p>
                 </div>
@@ -174,11 +174,11 @@ const HomePage = () => {
           {/* Header */}
           <div className="text-center mb-12">
             <h2 className="text-3xl lg:text-4xl font-extrabold text-textMain mb-3">
-              Our Menu
+              Thực đơn của chúng tôi
             </h2>
             <div className="w-20 h-1.5 bg-primary mx-auto rounded-full mb-4" />
             <p className="text-textSec">
-              Search, filter and sort to find your favorite dishes
+              Tìm kiếm, lọc và sắp xếp để tìm những món ăn yêu thích của bạn
             </p>
           </div>
 
@@ -194,7 +194,7 @@ const HomePage = () => {
                 />
                 <input
                   type="text"
-                  placeholder="Search for food..."
+                  placeholder="Tìm kiếm món ăn..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   className="w-full h-10 pl-10 pr-4 rounded-xl bg-white border border-gray-200 focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-sm"
@@ -204,8 +204,8 @@ const HomePage = () => {
               {/* Radio: Show */}
               <div className="flex items-center gap-1 bg-white border border-gray-200 rounded-xl px-3 h-10">
                 {[
-                  { val: false, label: "All" },
-                  { val: true, label: "⭐ Best Seller" },
+                  { val: false, label: "Tất cả" },
+                  { val: true, label: "⭐ Bán chạy" },
                 ].map((opt) => (
                   <button
                     key={String(opt.val)}
@@ -251,14 +251,14 @@ const HomePage = () => {
                   <LayoutDashboard size={16} />
                   <span className="font-bold">
                     {sortBy === "popular"
-                      ? "Popular"
+                      ? "Phổ biến"
                       : sortBy === "price_asc"
-                        ? "Low → High"
+                        ? "Giá thấp → cao"
                         : sortBy === "price_desc"
-                          ? "High → Low"
+                          ? "Giá cao → thấp"
                           : sortBy === "name_asc"
-                            ? "A → Z"
-                            : "Z → A"}
+                            ? "Tên A → Z"
+                            : "Tên Z → A"}
                   </span>
                   <ChevronDown
                     size={14}
@@ -268,11 +268,11 @@ const HomePage = () => {
                 {isSortOpen && (
                   <div className="absolute right-0 top-11 w-52 bg-white rounded-xl shadow-xl border border-gray-100 py-2 overflow-hidden">
                     {[
-                      { id: "popular", label: "Popular" },
-                      { id: "price_asc", label: "Price: Low to High" },
-                      { id: "price_desc", label: "Price: High to Low" },
-                      { id: "name_asc", label: "Name: A to Z" },
-                      { id: "name_desc", label: "Name: Z to A" },
+                      { id: "popular", label: "Phổ biến" },
+                      { id: "price_asc", label: "Giá: Thấp đến Cao" },
+                      { id: "price_desc", label: "Giá: Cao đến Thấp" },
+                      { id: "name_asc", label: "Tên: A đến Z" },
+                      { id: "name_desc", label: "Tên: Z đến A" },
                     ].map((opt) => (
                       <button
                         key={opt.id}
@@ -319,7 +319,7 @@ const HomePage = () => {
                   onClick={() => setSelectedCats([])}
                   className="text-xs text-textSec hover:text-red-500 underline ml-1"
                 >
-                  Clear
+                  Xóa bộ lọc
                 </button>
               )}
             </div>
@@ -327,9 +327,9 @@ const HomePage = () => {
 
           {/* Result count */}
           <p className="text-sm text-textSec mb-6">
-            Found{" "}
+            Tìm thấy{" "}
             <span className="font-bold text-textMain">{filtered.length}</span>{" "}
-            dishes
+            món ăn
           </p>
 
           {/* ── DISH GRID ── */}
@@ -337,10 +337,10 @@ const HomePage = () => {
             <div className="text-center py-24">
               <p className="text-5xl mb-4">🍽️</p>
               <p className="text-xl font-bold text-textMain mb-2">
-                No dishes found
+                Không tìm thấy món ăn nào
               </p>
               <p className="text-textSec">
-                Try adjusting your filters or search keyword
+                Hãy thử điều chỉnh bộ lọc hoặc từ khóa tìm kiếm
               </p>
             </div>
           ) : (
@@ -362,7 +362,7 @@ const HomePage = () => {
                     />
                     {dish.isBestSeller && (
                       <div className="absolute top-3 left-3 bg-primary/90 text-white text-[10px] font-bold px-2.5 py-1 rounded-full">
-                        ⭐ Best Seller
+                        ⭐ Bán chạy
                       </div>
                     )}
                     <button
@@ -410,11 +410,11 @@ const HomePage = () => {
                       >
                         {addedId === dish.id ? (
                           <>
-                            <Check size={16} strokeWidth={3} /> Added!
+                            <Check size={16} strokeWidth={3} /> Đã thêm!
                           </>
                         ) : (
                           <>
-                            <Plus size={16} /> Add
+                            <Plus size={16} /> Thêm
                           </>
                         )}
                       </button>
@@ -430,7 +430,7 @@ const HomePage = () => {
               onClick={() => navigate("/menu")}
               className="px-8 py-3.5 border-2 border-primary text-primary font-bold rounded-2xl hover:bg-primary hover:text-white transition-all"
             >
-              View Full Menu →
+              Xem toàn bộ thực đơn →
             </button>
           </div>
         </div>
@@ -442,11 +442,11 @@ const HomePage = () => {
           <div className="bg-white rounded-3xl shadow-xl overflow-hidden flex flex-col md:flex-row">
             <div className="md:w-1/2 p-10 lg:p-14 flex flex-col justify-center">
               <h2 className="text-4xl font-extrabold text-textMain mb-4">
-                Book a Table
+                Đặt bàn ngay
               </h2>
               <p className="text-textSec mb-8">
-                Reserve your spot at Foodly and enjoy an unforgettable dining
-                experience with your loved ones.
+                Đặt chỗ trước tại Foodly để tận hưởng trải nghiệm ẩm thực khó quên
+                cùng những người thân yêu.
               </p>
               <form
                 className="space-y-4"
@@ -459,14 +459,14 @@ const HomePage = () => {
                   type="submit"
                   className="w-full bg-primary text-white font-bold h-12 rounded-xl hover:bg-primaryDark transition-all mt-4"
                 >
-                  Book Now
+                  Đặt bàn ngay
                 </button>
               </form>
             </div>
             <div className="md:w-1/2 relative min-h-[300px]">
               <img
                 src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80"
-                alt="Restaurant interior"
+                alt="Không gian nhà hàng"
                 className="absolute inset-0 w-full h-full object-cover"
               />
             </div>

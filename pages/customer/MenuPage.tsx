@@ -9,7 +9,7 @@ const MenuPage = () => {
    const { addToCart } = useApp();
    const navigate = useNavigate();
    const [dishes, setDishes] = useState<Dish[]>([]);
-   const [filter, setFilter] = useState('All');
+   const [filter, setFilter] = useState('Tất cả');
    const [search, setSearch] = useState('');
    const [sortBy, setSortBy] = useState<'popular' | 'price_asc' | 'price_desc'>('popular');
    const [isSortOpen, setIsSortOpen] = useState(false);
@@ -73,7 +73,7 @@ const MenuPage = () => {
                   <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
                   <input
                      type="text"
-                     placeholder="Search for food..."
+                     placeholder="Tìm kiếm món ăn..."
                      value={search}
                      onChange={(e) => setSearch(e.target.value)}
                      className="w-full h-12 pl-12 pr-4 rounded-2xl bg-white border border-gray-100 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all shadow-sm"
@@ -88,8 +88,8 @@ const MenuPage = () => {
                   >
                      <div className="flex items-center gap-2">
                         <LayoutDashboard size={18} />
-                        <span>Sort by: <span className="font-bold">
-                           {sortBy === 'popular' ? 'Popular' : sortBy === 'price_asc' ? 'Price: Low to High' : 'Price: High to Low'}
+                        <span>Sắp xếp theo: <span className="font-bold">
+                           {sortBy === 'popular' ? 'Phổ biến' : sortBy === 'price_asc' ? 'Giá: Thấp đến Cao' : 'Giá: Cao đến Thấp'}
                         </span></span>
                      </div>
                      <ChevronDown size={16} className={`text-gray-400 transition-transform ${isSortOpen ? 'rotate-180' : ''}`} />
@@ -98,9 +98,9 @@ const MenuPage = () => {
                   {isSortOpen && (
                      <div className="absolute right-0 top-14 w-full sm:w-64 bg-white rounded-xl shadow-xl border border-gray-100 py-2 overflow-hidden animate-in fade-in zoom-in-95 duration-200">
                         {[
-                           { id: 'popular', label: 'Popular' },
-                           { id: 'price_asc', label: 'Price: Low to High' },
-                           { id: 'price_desc', label: 'Price: High to Low' }
+                           { id: 'popular', label: 'Phổ biến' },
+                           { id: 'price_asc', label: 'Giá: Thấp đến Cao' },
+                           { id: 'price_desc', label: 'Giá: Cao đến Thấp' }
                         ].map((option) => (
                            <button
                               key={option.id}
@@ -127,7 +127,7 @@ const MenuPage = () => {
                      className="relative w-full aspect-[4/3] overflow-hidden cursor-pointer"
                   >
                      <img src={dish.image} alt={dish.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
-                     {dish.isBestSeller && <div className="absolute top-3 left-3 bg-white/90 px-3 py-1 rounded-full text-[10px] font-bold text-primary backdrop-blur-sm shadow-sm">Popular</div>}
+                     {dish.isBestSeller && <div className="absolute top-3 left-3 bg-white/90 px-3 py-1 rounded-full text-[10px] font-bold text-primary backdrop-blur-sm shadow-sm">Bán chạy</div>}
                   </div>
                   <div className="p-5 flex flex-col flex-1">
                      <div className="flex justify-between items-start mb-2 gap-2">
@@ -151,12 +151,12 @@ const MenuPage = () => {
                            {addedItems[dish.id] ? (
                               <>
                                  <Check size={18} strokeWidth={3} className="animate-[bounce_0.5s_ease-in-out]" />
-                                 <span>Added!</span>
+                                 <span>Đã thêm!</span>
                               </>
                            ) : (
                               <>
                                  <Plus size={18} />
-                                 <span>Add to Cart</span>
+                                 <span>Thêm vào giỏ</span>
                               </>
                            )}
                         </button>

@@ -239,11 +239,10 @@ const BookingPage = () => {
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-10">
           <h1 className="text-4xl font-extrabold text-gray-900 mb-2">
-            Book a Table
+            Đặt bàn
           </h1>
           <p className="text-gray-500">
-            Reserve your spot and get ready for a delightful culinary
-            experience.
+            Đặt chỗ trước và chuẩn bị cho một trải nghiệm ẩm thực tuyệt vời.
           </p>
         </div>
 
@@ -266,7 +265,7 @@ const BookingPage = () => {
                     {s}
                   </div>
                   <span className="text-xs font-bold uppercase tracking-wider">
-                    {["Details", "Contact", "Confirm"][s - 1]}
+                    {["Chi tiết", "Liên hệ", "Xác nhận"][s - 1]}
                   </span>
                 </div>
               ))}
@@ -278,12 +277,12 @@ const BookingPage = () => {
           {step === 1 && (
             <div className="p-8 sm:p-10">
               <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
-                <Calendar className="text-primary" /> When are you coming?
+                <Calendar className="text-primary" /> Bạn đến khi nào?
               </h2>
               <div className="space-y-8">
                 <div>
                   <label className="block text-sm font-bold text-gray-700 mb-3 flex items-center gap-2">
-                    <Users size={18} /> Number of Guests
+                    <Users size={18} /> Số lượng khách
                   </label>
                   <div className="flex items-center gap-4">
                     <button
@@ -317,7 +316,7 @@ const BookingPage = () => {
                 </div>
                 <div>
                   <label className="block text-sm font-bold text-gray-700 mb-3 flex items-center gap-2">
-                    <Calendar size={18} /> Date
+                    <Calendar size={18} /> Ngày đặt
                   </label>
                   <input
                     type="date"
@@ -335,21 +334,21 @@ const BookingPage = () => {
                 </div>
                 <div>
                   <label className="block text-sm font-bold text-gray-700 mb-3 flex items-center gap-2">
-                    <Clock size={18} /> Time
+                    <Clock size={18} /> Giờ đặt
                     {formData.date && (
                       <span className="text-xs text-gray-500 font-normal">
                         (
                         {new Date(formData.date).getDay() === 0 ||
                         new Date(formData.date).getDay() === 6
-                          ? "Sat-Sun: 08:00-23:00"
-                          : "Mon-Fri: 09:00-22:00"}
+                          ? "T7-CN: 08:00-23:00"
+                          : "T2-T6: 09:00-22:00"}
                         )
                       </span>
                     )}
                   </label>
                   {!formData.date ? (
                     <div className="text-center py-8 text-gray-400 bg-gray-50 rounded-xl border border-dashed border-gray-200">
-                      Please select a date first
+                      Vui lòng chọn ngày trước
                     </div>
                   ) : (
                     <div>
@@ -357,18 +356,18 @@ const BookingPage = () => {
                         {[
                           {
                             id: "morning",
-                            label: "🌅 Morning",
-                            time: "8AM-12PM",
+                            label: "🌅 Sáng",
+                            time: "8:00 - 12:00",
                           },
                           {
                             id: "afternoon",
-                            label: "☀️ Afternoon",
-                            time: "12PM-5PM",
+                            label: "☀️ Chiều",
+                            time: "12:00 - 17:00",
                           },
                           {
                             id: "evening",
-                            label: "🌙 Evening",
-                            time: "5PM-11PM",
+                            label: "🌙 Tối",
+                            time: "17:00 - 23:00",
                           },
                         ].map((period) => (
                           <button
@@ -412,21 +411,20 @@ const BookingPage = () => {
                       <div className="w-5 h-5 rounded bg-primary text-white flex items-center justify-center text-xs">
                         {availableTables.length}
                       </div>
-                      Available Tables
+                      Bàn còn trống
                     </span>
                     {isCheckingAvailability && (
                       <span className="text-primary text-xs flex items-center gap-1">
                         <div className="w-3 h-3 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />{" "}
-                        Checking...
+                        Đang kiểm tra...
                       </span>
                     )}
                   </label>
                   {availableTables.length === 0 && !isCheckingAvailability ? (
                     <div className="text-center py-8 text-amber-600 bg-amber-50 rounded-xl border border-amber-200">
-                      <p className="font-bold mb-2">😔 No available tables</p>
+                      <p className="font-bold mb-2">😔 Không còn bàn trống</p>
                       <p className="text-sm">
-                        All tables are booked for this time. Try another time
-                        slot.
+                        Tất cả bàn đã được đặt vào thời gian này. Vui lòng chọn khung giờ khác.
                       </p>
                     </div>
                   ) : (
@@ -455,8 +453,8 @@ const BookingPage = () => {
                               <div className="absolute inset-0 bg-white/40 flex items-center justify-center z-10 backdrop-blur-[1px]">
                                 <span className="bg-white/90 text-gray-500 text-[10px] font-bold px-2 py-1 rounded-full shadow-sm">
                                   {isTaken
-                                    ? "Booked"
-                                    : `Needs ${formData.guests} seats`}
+                                    ? "Đã đặt"
+                                    : `Cần ${formData.guests} chỗ`}
                                 </span>
                               </div>
                             )}
@@ -487,8 +485,8 @@ const BookingPage = () => {
                   className="w-full h-14 bg-primary text-white font-bold rounded-xl text-lg hover:bg-primaryDark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {formData.assignedTable
-                    ? "Continue to Details"
-                    : "Select a table to continue"}
+                    ? "Tiếp tục điền thông tin"
+                    : "Chọn bàn để tiếp tục"}
                 </button>
               </div>
             </div>
@@ -497,12 +495,12 @@ const BookingPage = () => {
           {step === 2 && (
             <div className="p-8 sm:p-10">
               <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
-                <User className="text-primary" /> Your Details
+                <User className="text-primary" /> Thông tin cá nhân
               </h2>
               <div className="space-y-5">
                 <div>
                   <label className="block text-sm font-bold text-gray-700 mb-2">
-                    Full Name
+                    Họ và tên
                   </label>
                   <div className="relative">
                     <User
@@ -515,7 +513,7 @@ const BookingPage = () => {
                       onChange={(e) =>
                         setFormData({ ...formData, name: e.target.value })
                       }
-                      placeholder="John Doe"
+                      placeholder="Nguyễn Văn A"
                       className="w-full h-14 pl-12 pr-4 rounded-xl border-2 border-gray-200 focus:border-primary focus:ring-0 outline-none transition-colors"
                     />
                   </div>
@@ -523,7 +521,7 @@ const BookingPage = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div>
                     <label className="block text-sm font-bold text-gray-700 mb-2">
-                      Phone Number
+                      Số điện thoại
                     </label>
                     <div className="relative">
                       <Phone
@@ -543,7 +541,7 @@ const BookingPage = () => {
                   </div>
                   <div>
                     <label className="block text-sm font-bold text-gray-700 mb-2">
-                      Email Address
+                      Địa chỉ Email
                     </label>
                     <div className="relative">
                       <Mail
@@ -556,7 +554,7 @@ const BookingPage = () => {
                         onChange={(e) =>
                           setFormData({ ...formData, email: e.target.value })
                         }
-                        placeholder="john@example.com"
+                        placeholder="email@example.com"
                         className="w-full h-14 pl-12 pr-4 rounded-xl border-2 border-gray-200 focus:border-primary focus:ring-0 outline-none transition-colors"
                       />
                     </div>
@@ -564,7 +562,7 @@ const BookingPage = () => {
                 </div>
                 <div>
                   <label className="block text-sm font-bold text-gray-700 mb-2">
-                    Special Requests (Optional)
+                    Yêu cầu đặc biệt (Không bắt buộc)
                   </label>
                   <div className="relative">
                     <Info
@@ -579,7 +577,7 @@ const BookingPage = () => {
                           specialRequests: e.target.value,
                         })
                       }
-                      placeholder="Allergies, wheelchair access, special occasion..."
+                      placeholder="Dị ứng thực phẩm, lối đi xe lăn, dịp đặc biệt..."
                       className="w-full min-h-[120px] py-4 pl-12 pr-4 rounded-xl border-2 border-gray-200 focus:border-primary focus:ring-0 outline-none transition-colors resize-y"
                     />
                   </div>
@@ -598,13 +596,13 @@ const BookingPage = () => {
                   }}
                   className="w-1/3 h-14 bg-gray-100 text-gray-700 font-bold rounded-xl text-lg hover:bg-gray-200 transition-colors"
                 >
-                  Back
+                  Quay lại
                 </button>
                 <button
                   onClick={handleGoToReview}
                   className="w-2/3 h-14 bg-primary text-white font-bold rounded-xl text-lg hover:bg-primaryDark transition-colors"
                 >
-                  Review Booking
+                  Xem lại thông tin
                 </button>
               </div>
             </div>

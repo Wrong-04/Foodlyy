@@ -109,7 +109,7 @@ const FoodDetailPage = () => {
                             />
                             {dish.isBestSeller && (
                                 <div className="absolute top-6 left-6 bg-primary text-white px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wider flex items-center gap-2 shadow-lg">
-                                    <Star size={14} fill="white" /> Best Seller
+                                    <Star size={14} fill="white" /> Bán chạy
                                 </div>
                             )}
 
@@ -147,9 +147,9 @@ const FoodDetailPage = () => {
                     {/* Right: Info Section */}
                     <div className="flex flex-col h-full lg:pt-4">
                         <div className="hidden lg:flex items-center gap-2 text-textSec text-sm mb-6">
-                            <button onClick={() => navigate('/')} className="hover:text-primary transition-colors">Home</button>
+                            <button onClick={() => navigate('/')} className="hover:text-primary transition-colors">Trang chủ</button>
                             <span>/</span>
-                            <button onClick={() => navigate('/menu')} className="hover:text-primary transition-colors">Menu</button>
+                            <button onClick={() => navigate('/menu')} className="hover:text-primary transition-colors">Thực đơn</button>
                             <span>/</span>
                             <span className="text-textMain font-medium">{dish.category}</span>
                         </div>
@@ -160,7 +160,7 @@ const FoodDetailPage = () => {
                                     {dish.category}
                                 </span>
                                 <span className="flex items-center gap-1 text-green-600 text-xs font-bold">
-                                    <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div> In Stock
+                                    <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div> Còn hàng
                                 </span>
                             </div>
                             <h1 className="text-4xl lg:text-5xl font-extrabold text-textMain tracking-tight">
