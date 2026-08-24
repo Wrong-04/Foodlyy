@@ -1,27 +1,31 @@
-﻿import React from "react";
+import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import ProtectedRoute from "../components/ProtectedRoute";
-import Layout from "../components/Layout";
+import ProtectedRoute from "../components/guards/ProtectedRoute";
+import Layout from "../components/layout/Layout";
 
-// Pages
-import LoginPage from "../page/LoginPage";
-import RegisterPage from "../page/RegisterPage";
-import ForgotPasswordPage from "../page/ForgotPasswordPage";
-import HomePage from "../page/HomePage";
-import MenuPage from "../page/MenuPage";
-import CartPage from "../page/CartPage";
-import CheckoutPage from "../page/CheckoutPage";
-import FoodDetailPage from "../page/FoodDetailPage";
-import ProfilePage from "../page/ProfilePage";
-import OrderHistoryPage from "../page/OrderHistoryPage";
-import OrderDetailPage from "../page/OrderDetailPage";
-import BookingPage from "../page/BookingPage";
-import BookingHistoryPage from "../page/BookingHistoryPage";
-import BookingDetailPage from "../page/BookingDetailPage";
-import AdminPage from "../page/AdminPage";
+// Auth pages
+import LoginPage from "../pages/auth/LoginPage";
+import RegisterPage from "../pages/auth/RegisterPage";
+import ForgotPasswordPage from "../pages/auth/ForgotPasswordPage";
+
+// Customer pages
+import HomePage from "../pages/customer/HomePage";
+import MenuPage from "../pages/customer/MenuPage";
+import CartPage from "../pages/customer/CartPage";
+import CheckoutPage from "../pages/customer/CheckoutPage";
+import FoodDetailPage from "../pages/customer/FoodDetailPage";
+import ProfilePage from "../pages/customer/ProfilePage";
+import OrderHistoryPage from "../pages/customer/OrderHistoryPage";
+import OrderDetailPage from "../pages/customer/OrderDetailPage";
+import BookingPage from "../pages/customer/BookingPage";
+import BookingHistoryPage from "../pages/customer/BookingHistoryPage";
+import BookingDetailPage from "../pages/customer/BookingDetailPage";
+
+// Admin pages
+import AdminPage from "../pages/admin/AdminPage";
 import { useApp } from "../context/AppContext";
 
-// Helper: bọc một page trong Layout + ProtectedRoute
+// Helper: bọc page trong Layout + ProtectedRoute
 const PrivatePage = ({
   children,
   roles,
