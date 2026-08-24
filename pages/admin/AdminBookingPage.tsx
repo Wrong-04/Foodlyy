@@ -281,7 +281,7 @@ const AdminBookingPage = () => {
                                   handleStatusChange(booking.id, "confirmed")
                                 }
                                 className="w-8 h-8 rounded-lg bg-green-50 text-green-600 hover:bg-green-500 hover:text-white flex items-center justify-center transition-colors"
-                                title="Confirm Booking"
+                                title="Xác nhận đặt bàn"
                               >
                                 <Check size={16} strokeWidth={3} />
                               </button>
@@ -290,7 +290,7 @@ const AdminBookingPage = () => {
                                   handleStatusChange(booking.id, "cancelled")
                                 }
                                 className="w-8 h-8 rounded-lg bg-red-50 text-red-600 hover:bg-red-500 hover:text-white flex items-center justify-center transition-colors"
-                                title="Cancel Booking"
+                                title="Hủy đặt bàn"
                               >
                                 <X size={16} strokeWidth={3} />
                               </button>
@@ -303,7 +303,7 @@ const AdminBookingPage = () => {
                               }
                               className="px-3 py-1.5 rounded-lg bg-gray-100 text-gray-700 font-bold text-xs hover:bg-gray-200 transition-colors"
                             >
-                              Mark Completed
+                              Hoàn thành
                             </button>
                           )}
                         </div>
@@ -320,10 +320,10 @@ const AdminBookingPage = () => {
                     <div className="flex flex-col items-center justify-center">
                       <Calendar size={48} className="text-gray-300 mb-4" />
                       <p className="text-[14px] font-bold text-textMain block mb-1 normal-case">
-                        No reservations found
+                        Không tìm thấy yêu cầu đặt bàn nào
                       </p>
                       <p className="normal-case text-[12px] opacity-70">
-                        Try adjusting your search criteria or filters.
+                        Thử điều chỉnh điều kiện tìm kiếm hoặc bộ lọc.
                       </p>
                     </div>
                   </td>

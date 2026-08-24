@@ -19,7 +19,7 @@ interface DishFormModalProps {
     title: string;
 }
 
-const CATEGORIES = ["Main", "Appetizer", "Drink", "Dessert", "Pizza", "Burger", "Salad"];
+const CATEGORIES = ["Món chính", "Bún & Phở", "Cơm", "Khai vị", "Đồ uống", "Tráng miệng"];
 
 const DishFormModal = ({ isOpen, onClose, onSubmit, initialData, title }: DishFormModalProps) => {
     const [formData, setFormData] = useState<DishFormData>({
@@ -27,7 +27,7 @@ const DishFormModal = ({ isOpen, onClose, onSubmit, initialData, title }: DishFo
         description: "",
         price: 0,
         image: "",
-        category: "Main",
+        category: "Món chính",
         isBestSeller: false,
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -49,7 +49,7 @@ const DishFormModal = ({ isOpen, onClose, onSubmit, initialData, title }: DishFo
                 description: "",
                 price: 0,
                 image: "",
-                category: "Main",
+                category: "Món chính",
                 isBestSeller: false,
             });
         }

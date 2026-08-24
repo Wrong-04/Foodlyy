@@ -84,7 +84,7 @@ const AdminDashboard = () => {
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="text-2xl font-extrabold text-textMain mb-1">Dashboard</h2>
+        <h2 className="text-2xl font-extrabold text-textMain mb-1">Tổng quan</h2>
         <p className="text-textSec text-sm">Tổng quan hoạt động nhà hàng hôm nay</p>
       </div>
 
@@ -132,7 +132,13 @@ const AdminDashboard = () => {
                   <td className="px-6 py-4 font-bold">{fmt(order.total)}</td>
                   <td className="px-6 py-4">
                     <span className={`px-3 py-1 text-xs font-bold rounded-full ${STATUS_COLORS[order.status]}`}>
-                      {order.status}
+                      {order.status === "Completed"
+                        ? "Hoàn thành"
+                        : order.status === "Cooking"
+                        ? "Đang nấu"
+                        : order.status === "Pending"
+                        ? "Chờ xử lý"
+                        : "Đã hủy"}
                     </span>
                   </td>
                 </tr>

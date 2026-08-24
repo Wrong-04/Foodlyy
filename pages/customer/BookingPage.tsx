@@ -611,40 +611,39 @@ const BookingPage = () => {
           {step === 3 && (
             <div className="p-8 sm:p-10">
               <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
-                <Check className="text-primary" /> Review & Confirm
+                <Check className="text-primary" /> Xem lại & Xác nhận
               </h2>
               <div className="bg-gray-50 rounded-2xl p-6 mb-8 border border-gray-100">
                 <h3 className="text-lg font-bold text-gray-900 mb-4 border-b border-gray-200 pb-3">
-                  Reservation Details
+                  Chi tiết đặt chỗ
                 </h3>
                 <div className="grid grid-cols-2 gap-y-4 text-sm">
                   {[
-                    ["Date", formData.date],
-                    ["Time", formData.time],
-                    ["Guests", `${formData.guests} People`],
+                    ["Ngày đặt", formData.date],
+                    ["Giờ đặt", formData.time],
+                    ["Số khách", `${formData.guests} người`],
                     [
-                      "Table",
-                      `${formData.assignedTable?.name} (${formData.assignedTable?.capacity} seats)`,
+                      "Bàn",
+                      `${formData.assignedTable?.name} (${formData.assignedTable?.capacity} chỗ)`,
                     ],
-                    ["Name", formData.name],
-                    ["Phone", formData.phone],
+                    ["Họ tên", formData.name],
+                    ["Điện thoại", formData.phone],
                   ].map(([label, value]) => (
-                    <>
-                      <div key={`${label}-l`} className="text-gray-500">
+                    <React.Fragment key={label}>
+                      <div className="text-gray-500">
                         {label}
                       </div>
                       <div
-                        key={`${label}-v`}
                         className="font-bold text-gray-900 text-right"
                       >
                         {value}
                       </div>
-                    </>
+                    </React.Fragment>
                   ))}
                   {formData.specialRequests && (
                     <>
                       <div className="text-gray-500 col-span-2 mt-2">
-                        Special Requests
+                        Yêu cầu đặc biệt
                       </div>
                       <div className="font-medium text-gray-700 col-span-2 bg-white p-3 rounded-lg border border-gray-200 italic">
                         "{formData.specialRequests}"
@@ -654,17 +653,17 @@ const BookingPage = () => {
                 </div>
               </div>
               <div className="mb-8">
-                <h3 className="font-bold text-gray-900 mb-4">Payment Method</h3>
+                <h3 className="font-bold text-gray-900 mb-4">Phương thức thanh toán</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {[
                     {
                       value: "pay_at_restaurant",
-                      label: "Pay at Restaurant",
+                      label: "Thanh toán tại nhà hàng",
                       disabled: false,
                     },
                     {
                       value: "pay_now_online",
-                      label: "Pay Now (Coming soon)",
+                      label: "Thanh toán trực tuyến (Sắp ra mắt)",
                       disabled: true,
                     },
                   ].map((option) => (
@@ -706,7 +705,7 @@ const BookingPage = () => {
                   disabled={isSubmitting}
                   className="w-1/3 h-14 bg-gray-100 text-gray-700 font-bold rounded-xl text-lg hover:bg-gray-200 transition-colors disabled:opacity-50"
                 >
-                  Back
+                  Quay lại
                 </button>
                 <button
                   onClick={handleSubmit}
@@ -716,10 +715,10 @@ const BookingPage = () => {
                   {isSubmitting ? (
                     <>
                       <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />{" "}
-                      Processing...
+                      Đang xử lý...
                     </>
                   ) : (
-                    "Confirm Booking"
+                    "Xác nhận đặt bàn"
                   )}
                 </button>
               </div>
@@ -732,14 +731,14 @@ const BookingPage = () => {
                 <Check size={48} strokeWidth={3} />
               </div>
               <h2 className="text-3xl font-extrabold text-gray-900 mb-4">
-                Booking Confirmed!
+                Đặt bàn thành công!
               </h2>
               <p className="text-gray-500 text-lg mb-8 max-w-md mx-auto">
-                Thank you,{" "}
+                Cảm ơn bạn,{" "}
                 <span className="font-bold text-gray-900">{formData.name}</span>
-                ! Your table ({formData.assignedTable?.name}) for{" "}
-                {formData.guests} has been reserved for{" "}
-                <strong className="text-gray-900">{formData.date}</strong> at{" "}
+                ! Bàn của bạn ({formData.assignedTable?.name}) dành cho{" "}
+                {formData.guests} người đã được đặt thành công vào ngày{" "}
+                <strong className="text-gray-900">{formData.date}</strong> lúc{" "}
                 <strong className="text-gray-900">{formData.time}</strong>.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -747,19 +746,19 @@ const BookingPage = () => {
                   onClick={() => navigate("/bookings")}
                   className="px-8 py-4 bg-primary text-white font-bold rounded-xl hover:bg-primaryDark transition-colors shadow-lg shadow-primary/20"
                 >
-                  View My Bookings
+                  Xem đặt chỗ của tôi
                 </button>
                 <button
                   onClick={() => navigate("/menu")}
                   className="px-8 py-4 bg-gray-100 text-gray-800 font-bold rounded-xl hover:bg-gray-200 transition-colors"
                 >
-                  Explore Menu
+                  Khám phá thực đơn
                 </button>
                 <button
                   onClick={() => navigate("/")}
                   className="px-8 py-4 border-2 border-gray-200 text-gray-700 font-bold rounded-xl hover:border-primary hover:text-primary transition-colors"
                 >
-                  Back to Home
+                  Quay lại trang chủ
                 </button>
               </div>
             </div>

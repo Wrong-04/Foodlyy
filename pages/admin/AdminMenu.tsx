@@ -5,13 +5,13 @@ import { supabase } from '../../lib/supabase';
 import { Dish } from '../../types';
 import DishFormModal, { DishFormData } from '../../components/admin/DishFormModal';
 
-const CATEGORIES = ["All", "Main", "Appetizer", "Drink", "Dessert", "Pizza", "Burger", "Salad"];
+const CATEGORIES = ["Tất cả", "Món chính", "Bún & Phở", "Cơm", "Khai vị", "Đồ uống", "Tráng miệng"];
 const ITEMS_PER_PAGE = 8;
 
 const AdminMenu = () => {
     const [dishes, setDishes] = useState<Dish[]>([]);
     const [searchQuery, setSearchQuery] = useState('');
-    const [activeCategory, setActiveCategory] = useState("All");
+    const [activeCategory, setActiveCategory] = useState("Tất cả");
     const [currentPage, setCurrentPage] = useState(1);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -39,7 +39,7 @@ const AdminMenu = () => {
     // Logic xử lý lọc và tìm kiếm
     const filteredDishes = useMemo(() => {
         return dishes.filter(dish => {
-            const matchCategory = activeCategory === "All" || dish.category === activeCategory;
+            const matchCategory = activeCategory === "Tất cả" || dish.category === activeCategory;
             const matchSearch = dish.name.toLowerCase().includes(searchQuery.toLowerCase());
             return matchCategory && matchSearch;
         });
@@ -165,7 +165,7 @@ const AdminMenu = () => {
                                     }`}
                             >
                                 {cat}
-                                {cat === "All" && (
+                                {cat === "Tất cả" && (
                                     <span className={`ml-2 px-1.5 py-0.5 rounded-full text-[10px] ${activeCategory === cat ? 'bg-white/20' : 'bg-gray-100'}`}>
                                         {dishes.length}
                                     </span>

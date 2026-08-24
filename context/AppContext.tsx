@@ -29,7 +29,13 @@ interface AppContextType {
 
 const AppContext = createContext<AppContextType | null>(null);
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
+const hashPassword = async (password: string): Promise<string> => {
+  const msgBuffer = new TextEncoder().encode(password);
+  const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const hashHex = hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
+  return hashHex;
+};
 
 const loadUserFromStorage = (): User | null => {
   try {
@@ -111,10 +117,11 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
   const login = async (email: string, password: string): Promise<User | null> => {
     try {
       const users = await dbService.getUsers();
+      const hashedPassword = await hashPassword(password);
       const user = users.find(
         (u) =>
           u.email.toLowerCase() === email.toLowerCase() &&
-          u.password === password
+          (u.password === password || u.password === hashedPassword)
       );
       if (!user) return null;
       setCurrentUser(user);
@@ -141,9 +148,11 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
       if (emailExists) {
         return { error: "Email đã tồn tại, vui lòng dùng email khác." };
       }
+      const hashedPassword = await hashPassword(data.password);
       const newUser: User = {
         id: users.length ? Math.max(...users.map((u) => u.id)) + 1 : 1,
         ...data,
+        password: hashedPassword,
       };
       await dbService.addUser(newUser);
       setCurrentUser(newUser);
