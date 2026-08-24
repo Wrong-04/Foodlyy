@@ -17,7 +17,7 @@ import {
   Clock3,
 } from "lucide-react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Booking } from "../../types";
+import { Booking, Table } from "../../types";
 import { dbService } from "../../lib/db";
 import { useApp } from "../../context/AppContext";
 
@@ -97,23 +97,28 @@ const BookingDetailPage = () => {
   const { bookingId } = useParams<{ bookingId: string }>();
   const navigate = useNavigate();
   const [booking, setBooking] = useState<Booking | null>(null);
+  const [tables, setTables] = useState<Table[]>([]);
   const [loading, setLoading] = useState(true);
   const [isCancelling, setIsCancelling] = useState(false);
 
   useEffect(() => {
-    const loadBooking = async () => {
+    const loadData = async () => {
       if (!bookingId) return;
       try {
-        const allBookings = await dbService.getBookings();
+        const [allBookings, allTables] = await Promise.all([
+          dbService.getBookings(),
+          dbService.getTables(),
+        ]);
         const found = allBookings.find((b) => b.id === bookingId);
         if (found) setBooking(found);
+        setTables(allTables);
       } catch (error) {
-        console.error("Failed to load booking:", error);
+        console.error("Failed to load booking details:", error);
       } finally {
         setLoading(false);
       }
     };
-    loadBooking();
+    loadData();
   }, [bookingId]);
 
   const handleCancelBooking = async () => {
@@ -250,7 +255,7 @@ const BookingDetailPage = () => {
                   <DetailItem
                     icon={<TableIcon size={22} />}
                     label="Bàn số"
-                    value={booking.tableId}
+                    value={tables.find((t) => t.id === booking.tableId)?.name || booking.tableId}
                     valueClass="font-black text-primary text-xl"
                   />
                 </div>

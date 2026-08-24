@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Plus,
   Minus,
@@ -202,8 +202,17 @@ const BookingPage = () => {
     setIsSubmitting(true);
     setError("");
     try {
+      const generateBookingId = (): string => {
+        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        let code = "";
+        for (let i = 0; i < 5; i++) {
+          code += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return `BK-${code}`;
+      };
+
       const newBooking: Booking = {
-        id: `B-${Math.floor(1000 + Math.random() * 9000)}-${Date.now().toString().slice(-4)}`,
+        id: generateBookingId(),
         userId: currentUser.id,
         name: formData.name,
         phone: formData.phone,
