@@ -8,7 +8,7 @@ const CartPage = () => {
   const { cart, updateQuantity, removeFromCart, currentUser } = useApp();
 
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const fmt = (p: number) => `${p.toLocaleString("vi-VN")}đ`;
+  const fmt = (p) => `${p.toLocaleString("vi-VN")}đ`;
 
   const handleCheckout = () => {
     if (!currentUser) { navigate("/login"); return; }

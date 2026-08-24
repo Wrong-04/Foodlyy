@@ -1,28 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { X } from "lucide-react";
-import { Dish } from "../../types";
 
-export interface DishFormData {
-    name: string;
-    description: string;
-    price: number;
-    image: string;
-    category: string;
-    isBestSeller: boolean;
-}
 
-interface DishFormModalProps {
-    isOpen: boolean;
-    onClose: () => void;
-    onSubmit: (data: DishFormData) => Promise<void>;
-    initialData?: Dish;
-    title: string;
-}
+
+
 
 const CATEGORIES = ["Món chính", "Bún & Phở", "Cơm", "Khai vị", "Đồ uống", "Tráng miệng"];
 
-const DishFormModal = ({ isOpen, onClose, onSubmit, initialData, title }: DishFormModalProps) => {
-    const [formData, setFormData] = useState<DishFormData>({
+const DishFormModal = ({ isOpen, onClose, onSubmit, initialData, title }) => {
+    const [formData, setFormData] = useState({
         name: "",
         description: "",
         price: 0,
@@ -57,7 +43,7 @@ const DishFormModal = ({ isOpen, onClose, onSubmit, initialData, title }: DishFo
 
     if (!isOpen) return null;
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setIsSubmitting(true);
         try {

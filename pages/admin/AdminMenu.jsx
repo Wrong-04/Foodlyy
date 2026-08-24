@@ -1,15 +1,14 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Search, Plus, Bell, Filter, Edit2, Trash2, ChevronLeft, ChevronRight, LayoutDashboard } from 'lucide-react';
 import { dbService } from '../../lib/db';
-import { supabase } from '../../lib/supabase';
-import { Dish } from '../../types';
-import DishFormModal, { DishFormData } from '../../components/admin/DishFormModal';
+
+import DishFormModal from '../../components/admin/DishFormModal';
 
 const CATEGORIES = ["Tất cả", "Món chính", "Bún & Phở", "Cơm", "Khai vị", "Đồ uống", "Tráng miệng"];
 const ITEMS_PER_PAGE = 8;
 
 const AdminMenu = () => {
-    const [dishes, setDishes] = useState<Dish[]>([]);
+    const [dishes, setDishes] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [activeCategory, setActiveCategory] = useState("Tất cả");
     const [currentPage, setCurrentPage] = useState(1);
@@ -18,7 +17,7 @@ const AdminMenu = () => {
     // Modal states
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-    const [editingDish, setEditingDish] = useState<Dish | undefined>(undefined);
+    const [editingDish, setEditingDish] = useState(undefined);
 
     const fetchDishes = async () => {
         try {
@@ -57,65 +56,49 @@ const AdminMenu = () => {
     }, [activeCategory, searchQuery]);
 
     // Các hàm tương tác Database
-    const handleAddDish = async (formData: DishFormData) => {
+    const handleAddDish = async (formData) => {
         const newId = dishes.length > 0 ? Math.max(...dishes.map(d => d.id)) + 1 : 1;
-        const newDish: Dish = { id: newId, ...formData };
-
-        // Vì dbService hiện tại giao diện chưa hỗ trợ addDish trực tiếp cho array json (hoặc nó gọi push qua supabase rest), 
-        // ta giả định sẽ lấy code custom cho API. Trong project này `dbService` chưa có `addDish`, 
-        // tuy nhiên ta có thể mock cập nhật UI trước (sau này update `databaseService.ts` nếu thực sự cần gọi Server)
-        // ** CẬP NHẬT: Thấy trong databaseService.ts không có addDish. Tạo mock add vào list UI tạm. **
+        const newDish = { id: newId, ...formData };
 
         try {
-            // Giả lập gọi API
-            const { data, error } = await supabase.from("dishes").insert([newDish]);
-            if (error) throw error;
-
+            await dbService.addDish(newDish);
             setDishes(prev => [...prev, newDish]);
         } catch (e) {
-            // Fallback: update UI only
-            console.warn("Lưu db thất bại, chỉ cập nhật UI", e);
-            setDishes(prev => [...prev, newDish]);
+            console.error("Lưu db thất bại:", e);
         }
     };
 
-    const handleEditDish = async (formData: DishFormData) => {
+    const handleEditDish = async (formData) => {
         if (!editingDish) return;
         const updatedDish = { ...editingDish, ...formData };
 
         try {
-            const { error } = await supabase.from("dishes").update(formData).eq("id", editingDish.id);
-            if (error) throw error;
-
+            await dbService.updateDish(editingDish.id, formData);
             setDishes(prev => prev.map(d => d.id === editingDish.id ? updatedDish : d));
         } catch (e) {
-            console.warn("Sửa db thất bại, chỉ cập nhật UI", e);
-            setDishes(prev => prev.map(d => d.id === editingDish.id ? updatedDish : d));
+            console.error("Sửa db thất bại:", e);
         }
     };
 
-    const handleDeleteDish = async (id: number) => {
+    const handleDeleteDish = async (id) => {
         if (!window.confirm("Bạn có chắc chắn muốn xóa món ăn này không? Hành động này không thể hoàn tác.")) {
             return;
         }
 
         try {
-            const { error } = await supabase.from("dishes").delete().eq("id", id);
-            if (error) throw error;
-
+            await dbService.deleteDish(id);
             setDishes(prev => prev.filter(d => d.id !== id));
         } catch (e) {
-            console.warn("Xóa db thất bại, chỉ cập nhật UI", e);
-            setDishes(prev => prev.filter(d => d.id !== id));
+            console.error("Xóa db thất bại:", e);
         }
     };
 
-    const openEditModal = (dish: Dish) => {
+    const openEditModal = (dish) => {
         setEditingDish(dish);
         setIsEditModalOpen(true);
     };
 
-    const fmt = (p: number) => `${(p / 1000).toString()}k`; // Format 65.000 -> 65k theo design
+    const fmt = (p) => `${(p / 1000).toString()}k`; // Format 65.000 -> 65k theo design
 
     return (
         <div className="flex flex-col h-full bg-background rounded-3xl p-6 shadow-sm border border-gray-100">

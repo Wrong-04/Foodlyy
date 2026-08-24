@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import type { ReactNode } from "react";
+
 import {
   ArrowLeft,
   Calendar,
@@ -11,27 +11,17 @@ import {
   Phone,
   Mail,
   User,
-  Table as TableIcon,
+  Table,
   AlertCircle,
   ArrowRight,
   Clock3,
 } from "lucide-react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Booking, Table } from "../../types";
+
 import { dbService } from "../../lib/db";
 import { useApp } from "../../context/AppContext";
 
-const STATUS_INFO: Record<
-  string,
-  {
-    label: string;
-    color: string;
-    bgColor: string;
-    borderColor: string;
-    icon: ReactNode;
-    desc: string;
-  }
-> = {
+const STATUS_INFO = {
   completed: {
     label: "Đã hoàn thành",
     color: "text-green-500",
@@ -65,7 +55,7 @@ const STATUS_INFO: Record<
     desc: "Nhà hàng đang kiểm tra và sẽ sớm xác nhận lịch hẹn của bạn.",
   },
 };
-const getStatusInfo = (status: string) =>
+const getStatusInfo = (status) =>
   STATUS_INFO[status.toLowerCase()] ?? STATUS_INFO.pending;
 
 const DetailItem = ({
@@ -73,11 +63,6 @@ const DetailItem = ({
   label,
   value,
   valueClass = "font-black text-textMain text-lg",
-}: {
-  icon: ReactNode;
-  label: string;
-  value: ReactNode;
-  valueClass?: string;
 }) => (
   <div className="flex gap-5 group">
     <div className="w-12 h-12 rounded-2xl bg-gray-50 flex items-center justify-center shrink-0 border border-gray-100 group-hover:bg-primary group-hover:text-white transition-all text-textSec">
@@ -94,10 +79,10 @@ const DetailItem = ({
 
 const BookingDetailPage = () => {
   const { currentUser } = useApp();
-  const { bookingId } = useParams<{ bookingId: string }>();
+  const { bookingId } = useParams();
   const navigate = useNavigate();
-  const [booking, setBooking] = useState<Booking | null>(null);
-  const [tables, setTables] = useState<Table[]>([]);
+  const [booking, setBooking] = useState(null);
+  const [tables, setTables] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isCancelling, setIsCancelling] = useState(false);
 

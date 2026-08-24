@@ -1,0 +1,783 @@
+{
+  "dishes": [
+    {
+      "id": 1,
+      "name": "Phở Bò Đặc Biệt",
+      "description": "Phở bò truyền thống nước dùng ninh xương 12 tiếng, thịt bò tái nạm gân sách đầy đặn.",
+      "price": 89000,
+      "image": "https://pholyquocsu.vn/wp-content/uploads/2019/09/PhoDacBiet.jpg",
+      "category": "Bún & Phở",
+      "isBestSeller": true
+    },
+    {
+      "id": 2,
+      "name": "Bún Bò Huế",
+      "description": "Bún bò Huế cay đậm đà đặc trưng miền Trung, chả Huế, giò heo, rau sống ăn kèm.",
+      "price": 79000,
+      "image": "https://cdn11.dienmaycholon.vn/filewebdmclnew/DMCL21/Picture/News/News_expe_15656/15656.png?version=221438",
+      "category": "Bún & Phở",
+      "isBestSeller": true
+    },
+    {
+      "id": 3,
+      "name": "Bún Chả Hà Nội",
+      "description": "Chả nướng thơm lừng, nem cuốn giòn tan, bún trắng, rau sống tươi và nước chấm ngọt chua.",
+      "price": 75000,
+      "image": "https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?w=400",
+      "category": "Bún & Phở",
+      "isBestSeller": false
+    },
+    {
+      "id": 5,
+      "name": "Cơm Tấm Sườn Bì Chả",
+      "description": "Cơm tấm đặc trưng Nam Bộ, sườn nướng mật ong, bì giòn, chả trứng hấp, mỡ hành thơm.",
+      "price": 75000,
+      "image": "https://i-giadinh.vnecdn.net/2024/03/07/7Honthinthnhphm1-1709800144-8583-1709800424.jpg",
+      "category": "Cơm",
+      "isBestSeller": true
+    },
+    {
+      "id": 6,
+      "name": "Cơm Gà Hội An",
+      "description": "Gà ta luộc vàng ươm xé phay, cơm nấu nước luộc gà béo thơm, nước mắm gừng đặc biệt.",
+      "price": 70000,
+      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5eNY3pOZDGWsHMKEGw5ugXMmdWgy4UhBcCD-PZM1Rq9iBAZb3ZweEyzM&s=10",
+      "category": "Cơm",
+      "isBestSeller": true
+    },
+    {
+      "id": 7,
+      "name": "Cơm Chiên Dương Châu",
+      "description": "Cơm chiên hạt rời với tôm, thịt xá xíu, trứng, hành lá và rau củ tươi ngon.",
+      "price": 65000,
+      "image": "https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=400",
+      "category": "Cơm",
+      "isBestSeller": false
+    },
+    {
+      "id": 9,
+      "name": "Chả Cá Lã Vọng",
+      "description": "Cá thì là nướng thơm nghệ sả, bún trắng, đậu phộng rang, hành phi và mắm tôm Hà Nội.",
+      "price": 120000,
+      "image": "https://i-giadinh.vnecdn.net/2025/12/01/Cha-ca-la-vong-7-vnexpress-176-8776-9111-1764583068.jpg",
+      "category": "Món chính",
+      "isBestSeller": true
+    },
+    {
+      "id": 10,
+      "name": "Bò Lúc Lắc",
+      "description": "Thịt bò Úc xào lúc lắc với hành tây, ớt chuông, sốt hành tiêu đen đặc biệt, ăn kèm cơm trắng.",
+      "price": 130000,
+      "image": "https://cdn2.fptshop.com.vn/unsafe/1920x0/filters:format(webp):quality(75)/cach_lam_bo_luc_lac_rau_cu_qua_8059aaaa3f.jpg",
+      "category": "Món chính",
+      "isBestSeller": true
+    },
+    {
+      "id": 11,
+      "name": "Gỏi Cuốn Tôm Thịt",
+      "description": "Gỏi cuốn tươi với tôm luộc, thịt heo, bún tươi, rau thơm, chấm tương hoisin đậu phộng.",
+      "price": 45000,
+      "image": "https://cdn2.fptshop.com.vn/unsafe/1920x0/filters:format(webp):quality(75)/2023_10_23_638336957766719361_cach-lam-goi-cuon.jpg",
+      "category": "Khai vị",
+      "isBestSeller": true
+    },
+    {
+      "id": 12,
+      "name": "Gỏi Đu Đủ Tôm Thịt",
+      "description": "Đu đủ xanh bào sợi, tôm khô, thịt ba chỉ, đậu phộng rang, nước mắm chua ngọt thơm lừng.",
+      "price": 55000,
+      "image": "https://i-giadinh.vnecdn.net/2023/06/11/Thnhphm11-1686458076-6150-1686458078.jpg",
+      "category": "Khai vị",
+      "isBestSeller": false
+    },
+    {
+      "id": 13,
+      "name": "Chả Giò Chiên Giòn",
+      "description": "Chả giò nhân thịt heo, miến, nấm mèo chiên vàng giòn, ăn kèm rau sống và nước chấm.",
+      "price": 55000,
+      "image": "https://i.ytimg.com/vi/xXhweAEmOFs/maxresdefault.jpg",
+      "category": "Khai vị",
+      "isBestSeller": false
+    },
+    {
+      "id": 14,
+      "name": "Cà Phê Sữa Đá",
+      "description": "Cà phê phin đậm đà pha với sữa đặc Ông Thọ, rót qua đá viên — hương vị đặc trưng Việt Nam.",
+      "price": 16000,
+      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTS-wrFd3zGM-LKJIZb-4utbHGRdXT3kl6eRMaTmbHhMM1meU9hJZuN9oZP&s=10",
+      "category": "Đồ uống",
+      "isBestSeller": true
+    },
+    {
+      "id": 15,
+      "name": "Trà Đào Cam Sả",
+      "description": "Trà đào thơm mát kết hợp cam tươi và sả, thanh mát giải nhiệt, thêm đá viên sảng khoái.",
+      "price": 45000,
+      "image": "https://lypham.vn/wp-content/uploads/2024/09/cach-lam-tra-dao-cam-sa.jpg",
+      "category": "Đồ uống",
+      "isBestSeller": true
+    },
+    {
+      "id": 17,
+      "name": "Chè Thái",
+      "description": "Chè Thái đa tầng với thạch, nata de coco, nhãn, vải, dừa non bào và nước cốt dừa béo ngậy.",
+      "price": 45000,
+      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgPXtLtVyfBNk3fuqKFevYrshbf4PWMSKQST-_GtsE0XzMUSKCFUmjfSg&s=10",
+      "category": "Tráng miệng",
+      "isBestSeller": true
+    },
+    {
+      "id": 18,
+      "name": "Bánh Flan Caramel",
+      "description": "Bánh flan mềm mịn vị trứng sữa thuần khiết, phủ lớp caramel đắng nhẹ, ăn lạnh sảng khoái.",
+      "price": 35000,
+      "image": "https://chefdzung.com.vn/uploads/images/ngoc-linh/banh-caramen.jpg",
+      "category": "Tráng miệng",
+      "isBestSeller": false
+    }
+  ],
+  "orders": [
+    {
+      "id": "ORD-1787553844447",
+      "userId": 2,
+      "customer": "Nguyễn Văn An",
+      "items": [
+        {
+          "id": 2,
+          "name": "Bún Bò Huế",
+          "image": "https://cdn11.dienmaycholon.vn/filewebdmclnew/DMCL21/Picture/News/News_expe_15656/15656.png?version=221438",
+          "price": 79000,
+          "category": "Bún & Phở",
+          "quantity": 1,
+          "description": "Bún bò Huế cay đậm đà đặc trưng miền Trung, chả Huế, giò heo, rau sống ăn kèm.",
+          "isBestSeller": true
+        },
+        {
+          "id": 1,
+          "name": "Phở Bò Đặc Biệt",
+          "image": "https://pholyquocsu.vn/wp-content/uploads/2019/09/PhoDacBiet.jpg",
+          "price": 89000,
+          "category": "Bún & Phở",
+          "quantity": 1,
+          "description": "Phở bò truyền thống nước dùng ninh xương 12 tiếng, thịt bò tái nạm gân sách đầy đặn.",
+          "isBestSeller": true
+        },
+        {
+          "id": 3,
+          "name": "Bún Chả Hà Nội",
+          "image": "https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?w=400",
+          "price": 75000,
+          "category": "Bún & Phở",
+          "quantity": 1,
+          "description": "Chả nướng thơm lừng, nem cuốn giòn tan, bún trắng, rau sống tươi và nước chấm ngọt chua.",
+          "isBestSeller": false
+        }
+      ],
+      "address": "Tại cửa hàng",
+      "phone": null,
+      "paymentMethod": "cash",
+      "deliveryOption": "takeaway",
+      "total": 243000,
+      "status": "Pending",
+      "createdAt": "2026-08-24T06:44:04.447Z"
+    },
+    {
+      "id": "ORD-1787553697664",
+      "userId": 2,
+      "customer": "Nguyễn Văn An",
+      "items": [
+        {
+          "id": 2,
+          "name": "Bún Bò Huế",
+          "image": "https://cdn11.dienmaycholon.vn/filewebdmclnew/DMCL21/Picture/News/News_expe_15656/15656.png?version=221438",
+          "price": 79000,
+          "category": "Bún & Phở",
+          "quantity": 1,
+          "description": "Bún bò Huế cay đậm đà đặc trưng miền Trung, chả Huế, giò heo, rau sống ăn kèm.",
+          "isBestSeller": true
+        },
+        {
+          "id": 3,
+          "name": "Bún Chả Hà Nội",
+          "image": "https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?w=400",
+          "price": 75000,
+          "category": "Bún & Phở",
+          "quantity": 1,
+          "description": "Chả nướng thơm lừng, nem cuốn giòn tan, bún trắng, rau sống tươi và nước chấm ngọt chua.",
+          "isBestSeller": false
+        }
+      ],
+      "address": "Tại cửa hàng",
+      "phone": null,
+      "paymentMethod": "cash",
+      "deliveryOption": "takeaway",
+      "total": 154000,
+      "status": "Pending",
+      "createdAt": "2026-08-24T06:41:37.664Z"
+    },
+    {
+      "id": "ORD-1787552842019",
+      "userId": 2,
+      "customer": "Nguyễn Văn An",
+      "items": [
+        {
+          "id": 2,
+          "name": "Bún Bò Huế",
+          "image": "https://cdn11.dienmaycholon.vn/filewebdmclnew/DMCL21/Picture/News/News_expe_15656/15656.png?version=221438",
+          "price": 79000,
+          "category": "Bún & Phở",
+          "quantity": 1,
+          "description": "Bún bò Huế cay đậm đà đặc trưng miền Trung, chả Huế, giò heo, rau sống ăn kèm.",
+          "isBestSeller": true
+        },
+        {
+          "id": 1,
+          "name": "Phở Bò Đặc Biệt",
+          "image": "https://pholyquocsu.vn/wp-content/uploads/2019/09/PhoDacBiet.jpg",
+          "price": 89000,
+          "category": "Bún & Phở",
+          "quantity": 1,
+          "description": "Phở bò truyền thống nước dùng ninh xương 12 tiếng, thịt bò tái nạm gân sách đầy đặn.",
+          "isBestSeller": true
+        }
+      ],
+      "address": "Tại cửa hàng",
+      "phone": null,
+      "paymentMethod": "cash",
+      "deliveryOption": "takeaway",
+      "total": 168000,
+      "status": "Cancelled",
+      "createdAt": "2026-08-24T06:27:22.019Z"
+    },
+    {
+      "id": "ORD-008",
+      "userId": 5,
+      "customer": "Phạm Thị Lan",
+      "items": [
+        {
+          "id": 7,
+          "name": "Cơm Chiên Dương Châu",
+          "image": "https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=400",
+          "price": 65000,
+          "category": "Cơm",
+          "quantity": 3,
+          "description": "Cơm chiên hạt rời"
+        }
+      ],
+      "address": "15 Võ Văn Tần, Quận 3, TP.HCM",
+      "phone": "0923456789",
+      "paymentMethod": "cash",
+      "deliveryOption": "delivery",
+      "total": 225000,
+      "status": "Pending",
+      "createdAt": "2026-08-20T17:55:00.000Z"
+    },
+    {
+      "id": "ORD-1787224851177",
+      "userId": 2,
+      "customer": "Nguyễn Văn An",
+      "items": [
+        {
+          "id": 1,
+          "name": "Phở Bò Đặc Biệt",
+          "image": "https://images.unsplash.com/photo-1555126634-323283e090fa?w=400",
+          "price": 89000,
+          "category": "Bún & Phở",
+          "quantity": 1,
+          "description": "Phở bò truyền thống nước dùng ninh xương 12 tiếng, thịt bò tái nạm gân sách đầy đặn.",
+          "isBestSeller": true
+        }
+      ],
+      "address": "Tại cửa hàng",
+      "phone": null,
+      "paymentMethod": "cash",
+      "deliveryOption": "takeaway",
+      "total": 89000,
+      "status": "Cancelled",
+      "createdAt": "2026-08-20T11:20:51.177Z"
+    },
+    {
+      "id": "ORD-1787224609807",
+      "userId": 2,
+      "customer": "Nguyễn Văn An",
+      "items": [
+        {
+          "id": 1,
+          "name": "Phở Bò Đặc Biệt",
+          "image": "https://images.unsplash.com/photo-1555126634-323283e090fa?w=400",
+          "price": 89000,
+          "category": "Bún & Phở",
+          "quantity": 2,
+          "description": "Phở bò truyền thống với nước dùng ninh xương 12 tiếng, thịt bò tái, nạm, gân và sách.",
+          "isBestSeller": true
+        }
+      ],
+      "address": "số 23 thạch thât hanoi",
+      "phone": "0368262783",
+      "paymentMethod": "cash",
+      "deliveryOption": "delivery",
+      "total": 208000,
+      "status": "Pending",
+      "createdAt": "2026-08-20T11:16:49.807Z"
+    },
+    {
+      "id": "ORD-007",
+      "userId": 4,
+      "customer": "Lê Hoàng Nam",
+      "items": [
+        {
+          "id": 3,
+          "name": "Bún Chả Hà Nội",
+          "image": "https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?w=400",
+          "price": 75000,
+          "category": "Bún & Phở",
+          "quantity": 1,
+          "description": "Chả nướng thơm lừng"
+        },
+        {
+          "id": 18,
+          "name": "Bánh Flan Caramel",
+          "image": "https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400",
+          "price": 35000,
+          "category": "Tráng miệng",
+          "quantity": 2,
+          "description": "Bánh flan mềm mịn"
+        }
+      ],
+      "address": "23 Hoàng Văn Thụ, Quận Phú Nhuận",
+      "phone": "0934567890",
+      "paymentMethod": "cash",
+      "deliveryOption": "delivery",
+      "total": 175000,
+      "status": "Cooking",
+      "createdAt": "2026-08-20T09:10:00.000Z"
+    },
+    {
+      "id": "ORD-006",
+      "userId": 3,
+      "customer": "Trần Thị Bình",
+      "items": [
+        {
+          "id": 9,
+          "name": "Chả Cá Lã Vọng",
+          "image": "https://images.unsplash.com/photo-1574484284002-952d92456975?w=400",
+          "price": 120000,
+          "category": "Món chính",
+          "quantity": 1,
+          "description": "Cá thì là nướng thơm"
+        },
+        {
+          "id": 16,
+          "name": "Nước Mía Tắc",
+          "image": "https://images.unsplash.com/photo-1610632380989-7f6c73609cf6?w=400",
+          "price": 30000,
+          "category": "Đồ uống",
+          "quantity": 2,
+          "description": "Nước mía tươi ép"
+        }
+      ],
+      "address": null,
+      "phone": null,
+      "paymentMethod": "cash",
+      "deliveryOption": "takeaway",
+      "total": 180000,
+      "status": "Cancelled",
+      "createdAt": "2026-08-19T14:20:00.000Z"
+    },
+    {
+      "id": "ORD-004",
+      "userId": 2,
+      "customer": "Nguyễn Văn An",
+      "items": [
+        {
+          "id": 10,
+          "name": "Bò Lúc Lắc",
+          "image": "https://images.unsplash.com/photo-1544025162-d76694265947?w=400",
+          "price": 130000,
+          "category": "Món chính",
+          "quantity": 1,
+          "description": "Thịt bò Úc xào lúc lắc"
+        },
+        {
+          "id": 15,
+          "name": "Trà Đào Cam Sả",
+          "image": "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400",
+          "price": 45000,
+          "category": "Đồ uống",
+          "quantity": 2,
+          "description": "Trà đào thơm mát"
+        }
+      ],
+      "address": "12 Nguyễn Huệ, Quận 1, TP.HCM",
+      "phone": "0901234567",
+      "paymentMethod": "card",
+      "deliveryOption": "delivery",
+      "total": 280000,
+      "status": "Pending",
+      "createdAt": "2026-08-18T19:00:00.000Z"
+    },
+    {
+      "id": "ORD-005",
+      "userId": 5,
+      "customer": "Phạm Thị Lan",
+      "items": [
+        {
+          "id": 6,
+          "name": "Cơm Gà Hội An",
+          "image": "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=400",
+          "price": 70000,
+          "category": "Cơm",
+          "quantity": 2,
+          "description": "Gà ta luộc vàng ươm"
+        },
+        {
+          "id": 11,
+          "name": "Gỏi Cuốn Tôm Thịt",
+          "image": "https://images.unsplash.com/photo-1562802378-063ec186a863?w=400",
+          "price": 45000,
+          "category": "Khai vị",
+          "quantity": 2,
+          "description": "Gỏi cuốn tươi"
+        }
+      ],
+      "address": "88 Trần Hưng Đạo, Quận 5, TP.HCM",
+      "phone": "0923456789",
+      "paymentMethod": "cash",
+      "deliveryOption": "delivery",
+      "total": 260000,
+      "status": "Completed",
+      "createdAt": "2026-08-18T11:30:00.000Z"
+    },
+    {
+      "id": "ORD-003",
+      "userId": 4,
+      "customer": "Lê Hoàng Nam",
+      "items": [
+        {
+          "id": 2,
+          "name": "Bún Bò Huế",
+          "image": "https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=400",
+          "price": 79000,
+          "category": "Bún & Phở",
+          "quantity": 2,
+          "description": "Bún bò Huế cay đậm đà"
+        }
+      ],
+      "address": null,
+      "phone": null,
+      "paymentMethod": "cash",
+      "deliveryOption": "takeaway",
+      "total": 158000,
+      "status": "Cooking",
+      "createdAt": "2026-08-17T08:45:00.000Z"
+    },
+    {
+      "id": "ORD-002",
+      "userId": 3,
+      "customer": "Trần Thị Bình",
+      "items": [
+        {
+          "id": 5,
+          "name": "Cơm Tấm Sườn Bì Chả",
+          "image": "https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400",
+          "price": 75000,
+          "category": "Cơm",
+          "quantity": 1,
+          "description": "Cơm tấm đặc trưng Nam Bộ"
+        },
+        {
+          "id": 17,
+          "name": "Chè Thái",
+          "image": "https://images.unsplash.com/photo-1541518763669-27fef04b14ea?w=400",
+          "price": 45000,
+          "category": "Tráng miệng",
+          "quantity": 1,
+          "description": "Chè Thái đa tầng"
+        }
+      ],
+      "address": "45 Lê Lợi, Quận 3, TP.HCM",
+      "phone": "0912345678",
+      "paymentMethod": "cash",
+      "deliveryOption": "delivery",
+      "total": 150000,
+      "status": "Completed",
+      "createdAt": "2026-08-16T12:00:00.000Z"
+    },
+    {
+      "id": "ORD-001",
+      "userId": 2,
+      "customer": "Nguyễn Văn An",
+      "items": [
+        {
+          "id": 1,
+          "name": "Phở Bò Đặc Biệt",
+          "image": "https://images.unsplash.com/photo-1555126634-323283e090fa?w=400",
+          "price": 89000,
+          "category": "Bún & Phở",
+          "quantity": 2,
+          "description": "Phở bò truyền thống"
+        },
+        {
+          "id": 14,
+          "name": "Cà Phê Sữa Đá",
+          "image": "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=400",
+          "price": 35000,
+          "category": "Đồ uống",
+          "quantity": 2,
+          "description": "Cà phê phin đậm đà"
+        }
+      ],
+      "address": "12 Nguyễn Huệ, Quận 1, TP.HCM",
+      "phone": "0901234567",
+      "paymentMethod": "cash",
+      "deliveryOption": "delivery",
+      "total": 278000,
+      "status": "Completed",
+      "createdAt": "2026-08-15T10:30:00.000Z"
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "name": "Admin Quản Lý",
+      "email": "admin@foodly.com",
+      "password": "123456",
+      "role": "admin",
+      "cart": [],
+      "wishlist": []
+    },
+    {
+      "id": 2,
+      "name": "Nguyễn Văn An",
+      "email": "an@foodly.com",
+      "password": "123456",
+      "role": "customer",
+      "cart": [],
+      "wishlist": []
+    },
+    {
+      "id": 3,
+      "name": "Trần Thị Bình",
+      "email": "binh@foodly.com",
+      "password": "123456",
+      "role": "customer",
+      "cart": [],
+      "wishlist": []
+    },
+    {
+      "id": 4,
+      "name": "Lê Hoàng Nam",
+      "email": "nam@foodly.com",
+      "password": "123456",
+      "role": "customer",
+      "cart": [],
+      "wishlist": []
+    },
+    {
+      "id": 5,
+      "name": "Phạm Thị Lan",
+      "email": "lan@foodly.com",
+      "password": "123456",
+      "role": "customer",
+      "cart": [],
+      "wishlist": []
+    },
+    {
+      "id": 6,
+      "name": "Qhuy",
+      "email": "huytovip1234@gmail.com",
+      "password": "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3",
+      "role": "customer",
+      "cart": [],
+      "wishlist": []
+    }
+  ],
+  "tables": [
+    {
+      "id": "T01",
+      "name": "Bàn 01",
+      "capacity": 2,
+      "status": "available"
+    },
+    {
+      "id": "T02",
+      "name": "Bàn 02",
+      "capacity": 2,
+      "status": "available"
+    },
+    {
+      "id": "T03",
+      "name": "Bàn 03",
+      "capacity": 4,
+      "status": "available"
+    },
+    {
+      "id": "T04",
+      "name": "Bàn 04",
+      "capacity": 4,
+      "status": "available"
+    },
+    {
+      "id": "T05",
+      "name": "Bàn 05",
+      "capacity": 4,
+      "status": "available"
+    },
+    {
+      "id": "T06",
+      "name": "Bàn 06",
+      "capacity": 6,
+      "status": "available"
+    },
+    {
+      "id": "T07",
+      "name": "Bàn 07",
+      "capacity": 6,
+      "status": "available"
+    },
+    {
+      "id": "T08",
+      "name": "Bàn 08",
+      "capacity": 8,
+      "status": "available"
+    },
+    {
+      "id": "T09",
+      "name": "VIP 01",
+      "capacity": 6,
+      "status": "available"
+    },
+    {
+      "id": "T10",
+      "name": "VIP 02",
+      "capacity": 8,
+      "status": "available"
+    },
+    {
+      "id": "T11",
+      "name": "VIP 03",
+      "capacity": 10,
+      "status": "available"
+    },
+    {
+      "id": "T12",
+      "name": "Sân thượng",
+      "capacity": 8,
+      "status": "available"
+    }
+  ],
+  "bookings": [
+    {
+      "id": "B-6265-7793",
+      "userId": 2,
+      "name": "Nguyễn Văn An",
+      "phone": "0975685609",
+      "email": "an@foodly.com",
+      "date": "2026-08-24",
+      "time": "16:00",
+      "guests": 2,
+      "tableId": "T01",
+      "status": "confirmed",
+      "specialRequests": "",
+      "paymentMethod": "pay_at_restaurant",
+      "rejectReason": null,
+      "createdAt": "2026-08-24T06:40:17.793Z"
+    },
+    {
+      "id": "BK-006",
+      "userId": 3,
+      "name": "Trần Thị Bình",
+      "phone": "0912345678",
+      "email": "binh@foodly.com",
+      "date": "2026-08-25",
+      "time": "18:30",
+      "guests": 4,
+      "tableId": "T04",
+      "status": "completed",
+      "specialRequests": "Kỷ niệm ngày cưới, cần menu đặc biệt.",
+      "paymentMethod": "cash",
+      "rejectReason": null,
+      "createdAt": "2026-08-20T11:00:00.000Z"
+    },
+    {
+      "id": "BK-003",
+      "userId": 4,
+      "name": "Lê Hoàng Nam",
+      "phone": "0934567890",
+      "email": "nam@foodly.com",
+      "date": "2026-08-24",
+      "time": "12:00",
+      "guests": 6,
+      "tableId": "T09",
+      "status": "confirmed",
+      "specialRequests": "Tiệc liên hoan công ty, cần phòng riêng yên tĩnh.",
+      "paymentMethod": "cash",
+      "rejectReason": null,
+      "createdAt": "2026-08-19T14:00:00.000Z"
+    },
+    {
+      "id": "BK-002",
+      "userId": 3,
+      "name": "Trần Thị Bình",
+      "phone": "0912345678",
+      "email": "binh@foodly.com",
+      "date": "2026-08-23",
+      "time": "19:00",
+      "guests": 4,
+      "tableId": "T03",
+      "status": "pending",
+      "specialRequests": null,
+      "paymentMethod": "cash",
+      "rejectReason": null,
+      "createdAt": "2026-08-19T10:30:00.000Z"
+    },
+    {
+      "id": "BK-001",
+      "userId": 2,
+      "name": "Nguyễn Văn An",
+      "phone": "0901234567",
+      "email": "an@foodly.com",
+      "date": "2026-08-22",
+      "time": "18:00",
+      "guests": 2,
+      "tableId": "T01",
+      "status": "confirmed",
+      "specialRequests": "Làm ơn chuẩn bị hoa sinh nhật cho bạn gái.",
+      "paymentMethod": "cash",
+      "rejectReason": null,
+      "createdAt": "2026-08-18T09:00:00.000Z"
+    },
+    {
+      "id": "BK-004",
+      "userId": 5,
+      "name": "Phạm Thị Lan",
+      "phone": "0923456789",
+      "email": "lan@foodly.com",
+      "date": "2026-08-21",
+      "time": "11:30",
+      "guests": 2,
+      "tableId": "T02",
+      "status": "completed",
+      "specialRequests": null,
+      "paymentMethod": "cash",
+      "rejectReason": null,
+      "createdAt": "2026-08-17T08:00:00.000Z"
+    },
+    {
+      "id": "BK-005",
+      "userId": 2,
+      "name": "Nguyễn Văn An",
+      "phone": "0901234567",
+      "email": "an@foodly.com",
+      "date": "2026-08-20",
+      "time": "20:00",
+      "guests": 8,
+      "tableId": "T10",
+      "status": "cancelled",
+      "specialRequests": "Họp mặt gia đình.",
+      "paymentMethod": "cash",
+      "rejectReason": null,
+      "createdAt": "2026-08-16T16:00:00.000Z"
+    }
+  ]
+}

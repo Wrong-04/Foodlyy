@@ -3,7 +3,7 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 
 // Layout bọc Navbar + nội dung + Footer
-const Layout = ({ children }: { children: React.ReactNode }) => (
+const Layout = ({ children }) => (
   <>
     <Navbar />
     <main>{children}</main>

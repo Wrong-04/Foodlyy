@@ -15,19 +15,19 @@ import {
     ArrowRight,
 } from "lucide-react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Order } from "../../types";
+
 import { dbService } from "../../lib/db";
 import { useApp } from "../../context/AppContext";
 
 const OrderDetailPage = () => {
     const { currentUser } = useApp();
-    const { orderId } = useParams<{ orderId: string }>();
+    const { orderId } = useParams();
     const navigate = useNavigate();
-    const [order, setOrder] = useState<Order | null>(null);
+    const [order, setOrder] = useState(null);
     const [loading, setLoading] = useState(true);
     const [isCancelling, setIsCancelling] = useState(false);
     const [showCancelConfirm, setShowCancelConfirm] = useState(false);
-    const [notification, setNotification] = useState<{ title: string; desc: string; type: "success" | "error" } | null>(null);
+    const [notification, setNotification] = useState(null);
 
     useEffect(() => {
         const loadOrder = async () => {
@@ -73,7 +73,7 @@ const OrderDetailPage = () => {
         }
     };
 
-    const getStatusInfo = (status: string) => {
+    const getStatusInfo = (status) => {
         switch (status) {
             case "Completed":
                 return {

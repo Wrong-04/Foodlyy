@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import type { ReactNode } from "react";
+
 import {
   Calendar,
   Clock,
@@ -10,15 +10,12 @@ import {
   Clock3,
   XCircle,
 } from "lucide-react";
-import { Booking, Table } from "../../types";
+
 import { Navigate, useNavigate } from "react-router-dom";
 import { dbService } from "../../lib/db";
 import { useApp } from "../../context/AppContext";
 
-const STATUS_INFO: Record<
-  string,
-  { label: string; color: string; icon: ReactNode }
-> = {
+const STATUS_INFO = {
   completed: {
     label: "Hoàn thành",
     color: "text-green-600 bg-green-50 border-green-100",
@@ -40,14 +37,14 @@ const STATUS_INFO: Record<
     icon: <Clock3 size={16} />,
   },
 };
-const getStatusInfo = (status: string) =>
+const getStatusInfo = (status) =>
   STATUS_INFO[status.toLowerCase()] ?? STATUS_INFO.pending;
 
 const BookingHistoryPage = () => {
   const { currentUser } = useApp();
   const navigate = useNavigate();
-  const [bookings, setBookings] = useState<Booking[]>([]);
-  const [tables, setTables] = useState<Table[]>([]);
+  const [bookings, setBookings] = useState([]);
+  const [tables, setTables] = useState([]);
   const [loading, setLoading] = useState(true);
 
   if (!currentUser) return <Navigate to="/login" replace />;

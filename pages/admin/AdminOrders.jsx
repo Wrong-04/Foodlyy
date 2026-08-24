@@ -13,11 +13,11 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { dbService } from "../../lib/db";
-import { Order, OrderStatus } from "../../types";
 
-const fmt = (p: number) => `${p.toLocaleString("vi-VN")}đ`;
 
-const STATUS_CONFIG: Record<OrderStatus, { label: string; color: string }> = {
+const fmt = (p) => `${p.toLocaleString("vi-VN")}đ`;
+
+const STATUS_CONFIG = {
   Pending: {
     label: "Chờ xác nhận",
     color: "bg-blue-100 text-blue-700 border-blue-200",
@@ -40,12 +40,12 @@ const ITEMS_PER_PAGE = 8;
 
 const AdminOrders = () => {
   const navigate = useNavigate();
-  const [orders, setOrders] = useState<Order[]>([]);
+  const [orders, setOrders] = useState([]);
   const [search, setSearch] = useState("");
-  const [editingId, setEditingId] = useState<string | null>(null);
-  const [editStatus, setEditStatus] = useState<OrderStatus>("Pending");
-  const [statusFilter, setStatusFilter] = useState<string>("All");
-  const [typeFilter, setTypeFilter] = useState<string>("All");
+  const [editingId, setEditingId] = useState(null);
+  const [editStatus, setEditStatus] = useState("Pending");
+  const [statusFilter, setStatusFilter] = useState("All");
+  const [typeFilter, setTypeFilter] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
@@ -81,7 +81,7 @@ const AdminOrders = () => {
     currentPage * ITEMS_PER_PAGE,
   );
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (id) => {
     if (!window.confirm("Xóa đơn hàng này?")) return;
     try {
       await dbService.deleteOrder(id);
@@ -92,7 +92,7 @@ const AdminOrders = () => {
     }
   };
 
-  const handleSaveStatus = async (id: string) => {
+  const handleSaveStatus = async (id) => {
     try {
       await dbService.updateOrder(id, { status: editStatus });
       loadOrders();
@@ -162,13 +162,13 @@ const AdminOrders = () => {
             >
               <Filter size={14} className="text-gray-400" />
               <select
-                value={value as string}
+                value={value}
                 onChange={(e) =>
-                  (onChange as (v: string) => void)(e.target.value)
+                  onChange(e.target.value)
                 }
                 className="bg-transparent border-none text-sm font-bold text-textMain outline-none min-w-[124px]"
               >
-                {(options as string[][]).map(([val, label]) => (
+                {options.map(([val, label]) => (
                   <option key={val} value={val}>
                     {label}
                   </option>
@@ -224,7 +224,7 @@ const AdminOrders = () => {
                         <select
                           value={editStatus}
                           onChange={(e) =>
-                            setEditStatus(e.target.value as OrderStatus)
+                            setEditStatus(e.target.value)
                           }
                           className="text-xs rounded-lg border border-gray-200 px-2 py-1 outline-none focus:ring-2 focus:ring-primary bg-white font-bold"
                         >

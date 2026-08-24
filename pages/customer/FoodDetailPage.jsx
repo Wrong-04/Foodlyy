@@ -13,14 +13,14 @@ import {
     Info
 } from "lucide-react";
 import { dbService } from "../../lib/db";
-import { Dish } from "../../types";
+
 import { useApp } from "../../context/AppContext";
 
 const FoodDetailPage = () => {
     const { addToCart, wishlist = [], toggleWishlist } = useApp();
-    const { dishId } = useParams<{ dishId: string }>();
+    const { dishId } = useParams();
     const navigate = useNavigate();
-    const [dish, setDish] = useState<Dish | null>(null);
+    const [dish, setDish] = useState(null);
     const [loading, setLoading] = useState(true);
     const [quantity, setQuantity] = useState(1);
     const [addedAnimating, setAddedAnimating] = useState(false);
@@ -75,7 +75,7 @@ const FoodDetailPage = () => {
         setTimeout(() => setAddedAnimating(false), 1500);
     };
 
-    const fmt = (p: number) => `${p.toLocaleString("vi-VN")}đ`;
+    const fmt = (p) => `${p.toLocaleString("vi-VN")}đ`;
 
     return (
         <div className="min-h-screen bg-background pb-20">

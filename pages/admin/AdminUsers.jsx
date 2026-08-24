@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Trash2, Search, Filter, ChevronLeft, ChevronRight, User as UserIcon, Mail, Shield, ShieldAlert, Pencil, Check, X } from "lucide-react";
+import { Trash2, Search, Filter, ChevronLeft, ChevronRight, User, Mail, Shield, ShieldAlert, Pencil, Check, X } from "lucide-react";
 import { dbService } from "../../lib/db";
-import { User, UserRole } from "../../types";
+
 
 const AdminUsers = () => {
-    const [users, setUsers] = useState<User[]>([]);
+    const [users, setUsers] = useState([]);
     const [search, setSearch] = useState("");
-    const [roleFilter, setRoleFilter] = useState<string>("All");
+    const [roleFilter, setRoleFilter] = useState("All");
     const [currentPage, setCurrentPage] = useState(1);
     const [isLoading, setIsLoading] = useState(true);
-    const [editingUserId, setEditingUserId] = useState<number | null>(null);
-    const [editRole, setEditRole] = useState<UserRole>("customer");
+    const [editingUserId, setEditingUserId] = useState(null);
+    const [editRole, setEditRole] = useState("customer");
     const ITEMS_PER_PAGE = 8;
 
     const fetchUsers = async () => {
@@ -47,7 +47,7 @@ const AdminUsers = () => {
         currentPage * ITEMS_PER_PAGE
     );
 
-    const handleDeleteUser = async (userId: number) => {
+    const handleDeleteUser = async (userId) => {
         if (!window.confirm("Bạn có chắc chắn muốn xóa người dùng này? Hành động này không thể hoàn tác.")) {
             return;
         }
@@ -61,7 +61,7 @@ const AdminUsers = () => {
         }
     };
 
-    const handleSaveRole = async (userId: number) => {
+    const handleSaveRole = async (userId) => {
         try {
             await dbService.updateUser(userId, { role: editRole });
             setUsers(prev => prev.map(u => u.id === userId ? { ...u, role: editRole } : u));
@@ -149,7 +149,7 @@ const AdminUsers = () => {
                                             {editingUserId === user.id ? (
                                                 <select
                                                     value={editRole}
-                                                    onChange={(e) => setEditRole(e.target.value as UserRole)}
+                                                    onChange={(e) => setEditRole(e.target.value)}
                                                     className="text-xs rounded-lg border border-gray-200 px-2 py-1 outline-none focus:ring-2 focus:ring-primary bg-white font-bold"
                                                 >
                                                     <option value="customer">Khách hàng</option>

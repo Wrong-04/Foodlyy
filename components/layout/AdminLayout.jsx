@@ -4,11 +4,10 @@ import {
   Users, LogOut, ChefHat, ChevronRight, CalendarDays,
 } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { User } from "../../types";
 
-type AdminTab = "dashboard" | "orders" | "menu" | "users" | "bookings";
 
-const TAB_PATHS: Record<AdminTab, string> = {
+
+const TAB_PATHS = {
   dashboard: "/admin",
   orders: "/admin/orders",
   bookings: "/admin/bookings",
@@ -16,7 +15,7 @@ const TAB_PATHS: Record<AdminTab, string> = {
   users: "/admin/users",
 };
 
-const NAV_ITEMS: { id: AdminTab; label: string; icon: React.FC<{ size?: number }> }[] = [
+const NAV_ITEMS = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
   { id: "orders",    label: "Đơn hàng",  icon: ShoppingCart },
   { id: "bookings",  label: "Đặt bàn",   icon: CalendarDays },
@@ -24,18 +23,14 @@ const NAV_ITEMS: { id: AdminTab; label: string; icon: React.FC<{ size?: number }
   { id: "users",     label: "Người dùng",icon: Users },
 ];
 
-interface AdminLayoutProps {
-  children: React.ReactNode;
-  user: User;
-  onLogout: () => void;
-}
 
-const AdminLayout = ({ children, user, onLogout }: AdminLayoutProps) => {
+
+const AdminLayout = ({ children, user, onLogout }) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
   const activeTab =
-    (Object.entries(TAB_PATHS) as [AdminTab, string][])
+    Object.entries(TAB_PATHS)
       .slice()
       .reverse()
       .find(([, path]) => pathname === path || pathname.startsWith(path + "/"))?.[0] ?? "dashboard";
@@ -112,4 +107,3 @@ const AdminLayout = ({ children, user, onLogout }: AdminLayoutProps) => {
 };
 
 export default AdminLayout;
-export type { AdminTab };
