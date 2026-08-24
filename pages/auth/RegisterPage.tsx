@@ -29,36 +29,36 @@ const RegisterPage = () => {
         <div className="w-full max-w-md">
           <button type="button" className="flex items-center gap-2 mb-8 justify-center lg:justify-start cursor-pointer" onClick={() => navigate('/')}>
             <div className="bg-primary p-2 rounded-lg text-white"><UtensilsCrossed size={24} /></div>
-            <span className="text-2xl font-bold text-textMain">Foodie Delight</span>
+            <span className="text-2xl font-bold text-textMain">Foodly</span>
           </button>
 
           <div className="bg-white p-8 rounded-2xl shadow-xl border border-gray-100">
-            <h2 className="text-2xl font-bold mb-2 text-center">Create Account</h2>
-            <p className="text-center text-gray-500 mb-6 text-sm">Join us to start your delicious journey</p>
+            <h2 className="text-2xl font-bold mb-2 text-center">Tạo tài khoản</h2>
+            <p className="text-center text-gray-500 mb-6 text-sm">Tham gia cùng chúng tôi để bắt đầu hành trình ẩm thực của bạn</p>
 
             <form className="space-y-4" onSubmit={handleSubmit}>
               <div className="space-y-2">
-                <label className="text-sm font-bold" htmlFor="fullName">Full Name</label>
-                <input type="text" id="fullName" value={name} onChange={(e) => setName(e.target.value)} placeholder="John Doe" className="w-full rounded-xl border-gray-200 bg-background h-12 px-4 focus:ring-primary focus:border-primary" required />
+                <label className="text-sm font-bold" htmlFor="fullName">Họ và tên</label>
+                <input type="text" id="fullName" value={name} onChange={(e) => setName(e.target.value)} placeholder="Nguyễn Văn A" className="w-full rounded-xl border-gray-200 bg-background h-12 px-4 focus:ring-primary focus:border-primary" required />
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-bold" htmlFor="email">Email</label>
-                <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="name@example.com" className="w-full rounded-xl border-gray-200 bg-background h-12 px-4 focus:ring-primary focus:border-primary" required />
+                <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="email@example.com" className="w-full rounded-xl border-gray-200 bg-background h-12 px-4 focus:ring-primary focus:border-primary" required />
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-bold" htmlFor="password">Password</label>
-                <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Create a password" className="w-full rounded-xl border-gray-200 bg-background h-12 px-4 focus:ring-primary focus:border-primary" required />
+                <label className="text-sm font-bold" htmlFor="password">Mật khẩu</label>
+                <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Nhập mật khẩu" className="w-full rounded-xl border-gray-200 bg-background h-12 px-4 focus:ring-primary focus:border-primary" required />
               </div>
               {error && <p className="text-sm text-red-500 font-semibold">{error}</p>}
               <button type="submit" className="w-full bg-primary text-white font-bold h-12 rounded-xl hover:bg-primaryDark transition-all mt-2">
-                Sign Up
+                Đăng ký
               </button>
             </form>
 
             <div className="mt-6 text-center">
               <p className="text-sm text-gray-500">
-                Already have an account?{' '}
-                <button onClick={() => navigate('/login')} className="text-primary font-bold hover:underline">Login</button>
+                Đã có tài khoản?{' '}
+                <button onClick={() => navigate('/login')} className="text-primary font-bold hover:underline">Đăng nhập</button>
               </p>
             </div>
           </div>
@@ -67,10 +67,10 @@ const RegisterPage = () => {
 
       {/* Left Side Image */}
       <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-gray-900 order-1 lg:order-2">
-        <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" className="absolute inset-0 w-full h-full object-cover opacity-60" alt="Restaurant Background" />
+        <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" className="absolute inset-0 w-full h-full object-cover opacity-60" alt="Nhà hàng" />
         <div className="relative z-10 flex flex-col justify-end p-16 h-full text-white">
-          <h1 className="text-5xl font-bold mb-4">Join The Club</h1>
-          <p className="text-xl opacity-90 max-w-md">Get exclusive access to secret menus, special events and more.</p>
+          <h1 className="text-5xl font-bold mb-4">Tham gia câu lạc bộ</h1>
+          <p className="text-xl opacity-90 max-w-md">Nhận đặc quyền truy cập thực đơn bí mật, sự kiện đặc biệt và nhiều hơn nữa.</p>
         </div>
       </div>
     </div>

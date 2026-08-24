@@ -145,7 +145,7 @@ const CheckoutPage = () => {
               <ShieldCheck className="text-green-500" size={24} />
             </div>
             <div>
-              <div className="text-[10px] font-black text-green-600 uppercase tracking-widest">SSL Encrypted</div>
+              <div className="text-[10px] font-black text-green-600 uppercase tracking-widest">Mã hóa SSL</div>
               <div className="text-sm font-black text-textMain">Bảo mật thông tin 100%</div>
             </div>
           </div>
@@ -374,7 +374,7 @@ const CheckoutPage = () => {
                   <div className="flex justify-between items-center">
                     <span className="text-[10px] font-black text-textSec uppercase tracking-widest">Phí vận chuyển</span>
                     <span className={`font-black ${deliveryFee === 0 ? 'text-green-500' : 'text-textMain'}`}>
-                      {deliveryFee > 0 ? `+${deliveryFee.toLocaleString("vi-VN")}đ` : "FREE"}
+                      {deliveryFee > 0 ? `+${deliveryFee.toLocaleString("vi-VN")}đ` : "MIỄN PHÍ"}
                     </span>
                   </div>
 
@@ -421,7 +421,7 @@ const CheckoutPage = () => {
                   <div className="flex items-center justify-center gap-6 pt-4 opacity-40">
                     <div className="px-3 py-1 border-2 border-gray-200 rounded-lg text-[8px] font-black uppercase tracking-widest">Visa</div>
                     <div className="px-3 py-1 border-2 border-gray-200 rounded-lg text-[8px] font-black uppercase tracking-widest">Momo</div>
-                    <div className="px-3 py-1 border-2 border-gray-200 rounded-lg text-[8px] font-black uppercase tracking-widest">Cash</div>
+                    <div className="px-3 py-1 border-2 border-gray-200 rounded-lg text-[8px] font-black uppercase tracking-widest">Tiền mặt</div>
                   </div>
                 </div>
               </div>

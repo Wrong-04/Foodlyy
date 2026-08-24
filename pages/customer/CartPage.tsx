@@ -20,10 +20,10 @@ const CartPage = () => {
     return (
       <div className="flex flex-col items-center justify-center py-24 text-center">
         <ShoppingCart size={64} className="text-gray-300 mb-6" />
-        <h2 className="text-2xl font-bold text-textMain mb-2">Your cart is empty</h2>
-        <p className="text-textSec mb-8">Looks like you haven't added any items yet.</p>
+        <h2 className="text-2xl font-bold text-textMain mb-2">Giỏ hàng của bạn đang trống</h2>
+        <p className="text-textSec mb-8">Dường như bạn chưa thêm món ăn nào vào giỏ.</p>
         <button onClick={() => navigate("/menu")} className="px-8 py-3 bg-primary text-white font-bold rounded-2xl hover:bg-primaryDark">
-          Browse Menu
+          Xem thực đơn
         </button>
       </div>
     );
@@ -35,8 +35,8 @@ const CartPage = () => {
         <button onClick={() => navigate("/menu")} className="p-2 hover:bg-gray-100 rounded-full">
           <ArrowRight className="rotate-180" />
         </button>
-        <h1 className="text-3xl font-black text-textMain">Your Cart</h1>
-        <span className="text-textSec font-medium ml-auto">{cart.length} items</span>
+        <h1 className="text-3xl font-black text-textMain">Giỏ hàng của bạn</h1>
+        <span className="text-textSec font-medium ml-auto">{cart.length} món</span>
       </div>
 
       <div className="flex flex-col lg:flex-row gap-8">
@@ -65,26 +65,26 @@ const CartPage = () => {
         {/* Order Summary */}
         <div className="w-full lg:w-[400px]">
           <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100 sticky top-24">
-            <h2 className="text-xl font-extrabold mb-6">Order Summary</h2>
+            <h2 className="text-xl font-extrabold mb-6">Tóm tắt đơn hàng</h2>
             <div className="mb-6">
-              <label className="block text-sm font-bold mb-2">Promo Code</label>
+              <label className="block text-sm font-bold mb-2">Mã giảm giá</label>
               <div className="flex gap-2">
-                <input type="text" placeholder="Enter code..." className="flex-1 rounded-xl border-gray-200 focus:border-primary focus:ring-primary bg-background text-sm px-4 h-10" />
-                <button className="bg-primary/10 text-primary font-bold px-4 rounded-xl text-sm hover:bg-primary/20">Apply</button>
+                <input type="text" placeholder="Nhập mã..." className="flex-1 rounded-xl border-gray-200 focus:border-primary focus:ring-primary bg-background text-sm px-4 h-10" />
+                <button className="bg-primary/10 text-primary font-bold px-4 rounded-xl text-sm hover:bg-primary/20">Áp dụng</button>
               </div>
             </div>
             <div className="space-y-3 border-b border-dashed border-gray-200 pb-6 mb-6">
-              <div className="flex justify-between text-textSec"><span>Subtotal</span> <span className="text-textMain font-bold">{fmt(total)}</span></div>
-              <div className="flex justify-between text-textSec"><span>Delivery</span> <span className="text-green-600 font-bold">Free</span></div>
-              <div className="flex justify-between text-textSec"><span>Discount</span> <span className="text-red-500 font-bold">-{fmt(0)}</span></div>
+              <div className="flex justify-between text-textSec"><span>Tạm tính</span> <span className="text-textMain font-bold">{fmt(total)}</span></div>
+              <div className="flex justify-between text-textSec"><span>Phí giao hàng</span> <span className="text-green-600 font-bold">Miễn phí</span></div>
+              <div className="flex justify-between text-textSec"><span>Giảm giá</span> <span className="text-red-500 font-bold">-{fmt(0)}</span></div>
             </div>
             <div className="flex justify-between items-center mb-8">
-              <span className="text-lg font-extrabold uppercase tracking-wider">Total</span>
+              <span className="text-lg font-extrabold uppercase tracking-wider">Tổng cộng</span>
               <span className="text-3xl font-black text-primary">{fmt(total)}</span>
             </div>
             <button onClick={handleCheckout} disabled={!currentUser} className="w-full bg-primary hover:bg-primaryDark disabled:opacity-50 disabled:cursor-not-allowed text-white font-black py-4 rounded-2xl shadow-lg shadow-primary/30 transition-all flex items-center justify-center gap-2 uppercase tracking-widest text-sm">
               <ClipboardList size={20} />
-              Checkout
+              Thanh toán
             </button>
           </div>
         </div>

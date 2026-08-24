@@ -118,7 +118,7 @@ const AdminOrders = () => {
           onClick={() => dbService.export()}
           className="flex items-center gap-2 px-4 py-2.5 bg-gray-100 text-textMain font-bold rounded-xl hover:bg-gray-200 transition-all text-sm"
         >
-          <Download size={16} /> Export DB
+          <Download size={16} /> Xuất dữ liệu
         </button>
       </div>
 
