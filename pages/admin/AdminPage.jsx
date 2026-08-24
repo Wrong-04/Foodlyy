@@ -1,6 +1,5 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import { User } from "../../types";
 import AdminLayout from "../../components/layout/AdminLayout";
 import AdminDashboard from "./AdminDashboard";
 import AdminOrders from "./AdminOrders";
@@ -8,12 +7,9 @@ import AdminBookingPage from "./AdminBookingPage";
 import AdminMenu from "./AdminMenu";
 import AdminUsers from "./AdminUsers";
 
-interface AdminPageProps {
-  user: User;
-  onLogout: () => void;
-}
 
-const AdminPage = ({ user, onLogout }: AdminPageProps) => (
+
+const AdminPage = ({ user, onLogout }) => (
   <AdminLayout user={user} onLogout={onLogout}>
     <Routes>
       <Route index element={<AdminDashboard />} />

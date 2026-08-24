@@ -1,35 +1,11 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { dbService } from "../lib/db";
-import { User, CartItem, Dish } from "../types";
-
-// ─── Types ────────────────────────────────────────────────────────────────────
-
-interface AppContextType {
-  currentUser: User | null;
-  cart: CartItem[];
-  wishlist: number[];
-  isLoading: boolean;
-  login: (email: string, password: string) => Promise<User | null>;
-  logout: () => void;
-  register: (data: {
-    name: string;
-    email: string;
-    password: string;
-    role: User["role"];
-  }) => Promise<{ user?: User; error?: string }>;
-  addToCart: (dish: Dish, quantity?: number) => void;
-  removeFromCart: (id: number) => void;
-  updateQuantity: (id: number, delta: number) => void;
-  clearCart: () => void;
-  cartCount: number;
-  toggleWishlist: (id: number) => void;
-}
 
 // ─── Context ──────────────────────────────────────────────────────────────────
 
-const AppContext = createContext<AppContextType | null>(null);
+const AppContext = createContext(null);
 
-const hashPassword = async (password: string): Promise<string> => {
+const hashPassword = async (password) => {
   const msgBuffer = new TextEncoder().encode(password);
   const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
   const hashArray = Array.from(new Uint8Array(hashBuffer));
@@ -37,7 +13,7 @@ const hashPassword = async (password: string): Promise<string> => {
   return hashHex;
 };
 
-const loadUserFromStorage = (): User | null => {
+const loadUserFromStorage = () => {
   try {
     return JSON.parse(localStorage.getItem("foodly_current_user") ?? "null");
   } catch {
@@ -45,7 +21,7 @@ const loadUserFromStorage = (): User | null => {
   }
 };
 
-const saveUserToStorage = (user: User | null) => {
+const saveUserToStorage = (user) => {
   if (user) {
     localStorage.setItem("foodly_current_user", JSON.stringify(user));
   } else {
@@ -55,12 +31,12 @@ const saveUserToStorage = (user: User | null) => {
 
 // ─── Provider ─────────────────────────────────────────────────────────────────
 
-export const AppProvider = ({ children }: { children: React.ReactNode }) => {
-  const [currentUser, setCurrentUser] = useState<User | null>(loadUserFromStorage);
-  const [cart, setCart] = useState<CartItem[]>([]);
-  const [wishlist, setWishlist] = useState<number[]>([]);
+export const AppProvider = ({ children }) => {
+  const [currentUser, setCurrentUser] = useState(loadUserFromStorage);
+  const [cart, setCart] = useState([]);
+  const [wishlist, setWishlist] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [loadedUserId, setLoadedUserId] = useState<number | null>(null);
+  const [loadedUserId, setLoadedUserId] = useState(null);
 
   // Load cart & wishlist khi user thay đổi
   useEffect(() => {
@@ -89,7 +65,7 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
     loadData();
   }, [currentUser]);
 
-  // Sync cart lên Supabase
+  // Sync cart lên local storage database
   useEffect(() => {
     if (currentUser && currentUser.id === loadedUserId && !isLoading) {
       dbService.setCart(currentUser.id, cart).catch((err) =>
@@ -98,7 +74,7 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, [cart, currentUser, isLoading, loadedUserId]);
 
-  // Sync wishlist lên Supabase
+  // Sync wishlist lên local storage database
   useEffect(() => {
     if (currentUser && currentUser.id === loadedUserId && !isLoading) {
       dbService.setWishlist(currentUser.id, wishlist).catch((err) =>
@@ -114,7 +90,7 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
 
   // ─── Auth ──────────────────────────────────────────────────────────────────
 
-  const login = async (email: string, password: string): Promise<User | null> => {
+  const login = async (email, password) => {
     try {
       const users = await dbService.getUsers();
       const hashedPassword = await hashPassword(password);
@@ -134,12 +110,7 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
 
   const logout = () => setCurrentUser(null);
 
-  const register = async (data: {
-    name: string;
-    email: string;
-    password: string;
-    role: User["role"];
-  }): Promise<{ user?: User; error?: string }> => {
+  const register = async (data) => {
     try {
       const users = await dbService.getUsers();
       const emailExists = users.some(
@@ -149,10 +120,12 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
         return { error: "Email đã tồn tại, vui lòng dùng email khác." };
       }
       const hashedPassword = await hashPassword(data.password);
-      const newUser: User = {
+      const newUser = {
         id: users.length ? Math.max(...users.map((u) => u.id)) + 1 : 1,
         ...data,
         password: hashedPassword,
+        cart: [],
+        wishlist: []
       };
       await dbService.addUser(newUser);
       setCurrentUser(newUser);
@@ -165,7 +138,7 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
 
   // ─── Cart ──────────────────────────────────────────────────────────────────
 
-  const addToCart = (dish: Dish, quantity: number = 1) => {
+  const addToCart = (dish, quantity = 1) => {
     setCart((prev) => {
       const existing = prev.find((i) => i.id === dish.id);
       if (existing) {
@@ -177,10 +150,10 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
     });
   };
 
-  const removeFromCart = (id: number) =>
+  const removeFromCart = (id) =>
     setCart((prev) => prev.filter((item) => item.id !== id));
 
-  const updateQuantity = (id: number, delta: number) =>
+  const updateQuantity = (id, delta) =>
     setCart((prev) =>
       prev.map((item) =>
         item.id === id
@@ -202,7 +175,7 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
 
   // ─── Wishlist ──────────────────────────────────────────────────────────────
 
-  const toggleWishlist = (id: number) =>
+  const toggleWishlist = (id) =>
     setWishlist((prev) =>
       prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
     );
@@ -232,7 +205,7 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
 
 // ─── Hook ──────────────────────────────────────────────────────────────────────
 
-export const useApp = (): AppContextType => {
+export const useApp = () => {
   const ctx = useContext(AppContext);
   if (!ctx) throw new Error("useApp must be used inside <AppProvider>");
   return ctx;

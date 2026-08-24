@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import type { ReactNode } from "react";
+
 import {
   Calendar,
   Clock,
@@ -10,15 +10,12 @@ import {
   Clock3,
   XCircle,
 } from "lucide-react";
-import { Booking } from "../../types";
+
 import { Navigate, useNavigate } from "react-router-dom";
 import { dbService } from "../../lib/db";
 import { useApp } from "../../context/AppContext";
 
-const STATUS_INFO: Record<
-  string,
-  { label: string; color: string; icon: ReactNode }
-> = {
+const STATUS_INFO = {
   completed: {
     label: "Hoàn thành",
     color: "text-green-600 bg-green-50 border-green-100",
@@ -40,29 +37,34 @@ const STATUS_INFO: Record<
     icon: <Clock3 size={16} />,
   },
 };
-const getStatusInfo = (status: string) =>
+const getStatusInfo = (status) =>
   STATUS_INFO[status.toLowerCase()] ?? STATUS_INFO.pending;
 
 const BookingHistoryPage = () => {
   const { currentUser } = useApp();
   const navigate = useNavigate();
-  const [bookings, setBookings] = useState<Booking[]>([]);
+  const [bookings, setBookings] = useState([]);
+  const [tables, setTables] = useState([]);
   const [loading, setLoading] = useState(true);
 
   if (!currentUser) return <Navigate to="/login" replace />;
 
   useEffect(() => {
-    const loadBookings = async () => {
+    const loadData = async () => {
       try {
-        const allBookings = await dbService.getBookings();
+        const [allBookings, allTables] = await Promise.all([
+          dbService.getBookings(),
+          dbService.getTables(),
+        ]);
         setBookings(allBookings.filter((b) => b.userId === currentUser.id));
+        setTables(allTables);
       } catch (error) {
-        console.error("Failed to load bookings:", error);
+        console.error("Failed to load booking data:", error);
       } finally {
         setLoading(false);
       }
     };
-    loadBookings();
+    loadData();
   }, [currentUser]);
 
   return (
@@ -162,7 +164,7 @@ const BookingHistoryPage = () => {
                         Bàn số
                       </p>
                       <p className="font-black text-primary text-lg">
-                        {booking.tableId}
+                        {tables.find((t) => t.id === booking.tableId)?.name || booking.tableId}
                       </p>
                     </div>
                     <button className="flex items-center justify-center w-12 h-12 rounded-2xl bg-gray-50 text-gray-400 border border-gray-100 group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-all shadow-sm">

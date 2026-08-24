@@ -15,17 +15,19 @@ import {
     ArrowRight,
 } from "lucide-react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Order } from "../../types";
+
 import { dbService } from "../../lib/db";
 import { useApp } from "../../context/AppContext";
 
 const OrderDetailPage = () => {
     const { currentUser } = useApp();
-    const { orderId } = useParams<{ orderId: string }>();
+    const { orderId } = useParams();
     const navigate = useNavigate();
-    const [order, setOrder] = useState<Order | null>(null);
+    const [order, setOrder] = useState(null);
     const [loading, setLoading] = useState(true);
     const [isCancelling, setIsCancelling] = useState(false);
+    const [showCancelConfirm, setShowCancelConfirm] = useState(false);
+    const [notification, setNotification] = useState(null);
 
     useEffect(() => {
         const loadOrder = async () => {
@@ -48,24 +50,30 @@ const OrderDetailPage = () => {
     const handleCancelOrder = async () => {
         if (!order || order.status !== "Pending") return;
 
-        const confirmCancel = window.confirm("Bạn có chắc chắn muốn hủy đơn hàng này không?");
-        if (!confirmCancel) return;
-
         setIsCancelling(true);
         try {
             await dbService.updateOrder(order.id, { status: "Cancelled" });
             setOrder({ ...order, status: "Cancelled" });
-            alert("Đơn hàng đã được hủy thành công.");
-            navigate("/");
+            setShowCancelConfirm(false);
+            setNotification({
+                title: "Thành công",
+                desc: "Đơn hàng của bạn đã được hủy thành công.",
+                type: "success",
+            });
         } catch (error) {
             console.error("Failed to cancel order:", error);
-            alert("Có lỗi xảy ra khi hủy đơn hàng. Vui lòng thử lại.");
+            setShowCancelConfirm(false);
+            setNotification({
+                title: "Thất bại",
+                desc: "Có lỗi xảy ra khi hủy đơn hàng. Vui lòng thử lại sau.",
+                type: "error",
+            });
         } finally {
             setIsCancelling(false);
         }
     };
 
-    const getStatusInfo = (status: string) => {
+    const getStatusInfo = (status) => {
         switch (status) {
             case "Completed":
                 return {
@@ -281,7 +289,7 @@ const OrderDetailPage = () => {
                         <div className="space-y-3">
                             {order.status === "Pending" && (
                                 <button
-                                    onClick={handleCancelOrder}
+                                    onClick={() => setShowCancelConfirm(true)}
                                     disabled={isCancelling}
                                     className="w-full bg-white hover:bg-red-50 text-red-500 border-2 border-red-100 hover:border-red-200 py-4 rounded-22px font-black uppercase tracking-widest text-xs transition-all flex items-center justify-center gap-2 disabled:opacity-50"
                                 >
@@ -317,6 +325,82 @@ const OrderDetailPage = () => {
                     </div>
                 </div>
             </div>
+            {/* Custom Cancellation Confirmation Modal */}
+            {showCancelConfirm && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/55 backdrop-blur-sm animate-in fade-in duration-200">
+                    <div className="bg-white rounded-3xl w-full max-w-md overflow-hidden shadow-2xl animate-in zoom-in-95 duration-200 border border-gray-100 p-6 text-center">
+                        <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <AlertCircle className="text-red-500 w-8 h-8" />
+                        </div>
+                        <h3 className="text-xl font-black text-textMain mb-2 uppercase tracking-tight">Hủy đơn hàng</h3>
+                        <p className="text-textSec text-sm font-medium mb-6 normal-case leading-relaxed">
+                            Bạn có chắc chắn muốn hủy đơn hàng này không? Hành động này không thể hoàn tác.
+                        </p>
+                        <div className="flex gap-3">
+                            <button
+                                onClick={() => setShowCancelConfirm(false)}
+                                disabled={isCancelling}
+                                className="flex-1 py-3 bg-gray-100 text-textSec font-bold rounded-xl text-sm hover:bg-gray-200 transition-colors disabled:opacity-50"
+                            >
+                                Quay lại
+                            </button>
+                            <button
+                                onClick={handleCancelOrder}
+                                disabled={isCancelling}
+                                className="flex-1 py-3 bg-red-500 text-white font-bold rounded-xl text-sm hover:bg-red-600 transition-colors flex items-center justify-center gap-2 shadow-md shadow-red-500/20 disabled:opacity-70"
+                            >
+                                {isCancelling ? (
+                                    <>
+                                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                                        Đang xử lý
+                                    </>
+                                ) : (
+                                    "Hủy đơn"
+                                )}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Custom Notification Modal */}
+            {notification && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/55 backdrop-blur-sm animate-in fade-in duration-200">
+                    <div className="bg-white rounded-3xl w-full max-w-md overflow-hidden shadow-2xl animate-in zoom-in-95 duration-200 border border-gray-100 p-6 text-center">
+                        <div className={`w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 ${
+                            notification.type === "success" ? "bg-green-50 text-green-500" : "bg-red-50 text-red-500"
+                        }`}>
+                            {notification.type === "success" ? (
+                                <CheckCircle2 className="w-8 h-8" />
+                            ) : (
+                                <XCircle className="w-8 h-8" />
+                            )}
+                        </div>
+                        <h3 className="text-xl font-black text-textMain mb-2 uppercase tracking-tight">
+                            {notification.title}
+                        </h3>
+                        <p className="text-textSec text-sm font-medium mb-6 normal-case leading-relaxed">
+                            {notification.desc}
+                        </p>
+                        <button
+                            onClick={() => {
+                                const type = notification.type;
+                                setNotification(null);
+                                if (type === "success") {
+                                    navigate("/orders");
+                                }
+                            }}
+                            className={`w-full py-3 text-white font-bold rounded-xl text-sm transition-colors shadow-md ${
+                                notification.type === "success" 
+                                    ? "bg-green-500 hover:bg-green-600 shadow-green-500/20" 
+                                    : "bg-red-500 hover:bg-red-600 shadow-red-500/20"
+                            }`}
+                        >
+                            Đóng
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

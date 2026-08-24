@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Plus,
   Minus,
@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { dbService } from "../../lib/db";
-import { Booking, Table } from "../../types";
+
 import { useApp } from "../../context/AppContext";
 
 const WEEKEND_SLOTS = [
@@ -77,10 +77,7 @@ const WEEKDAY_SLOTS = [
   "21:00",
   "21:30",
 ];
-const PERIOD_RANGES: Record<
-  "morning" | "afternoon" | "evening",
-  [number, number]
-> = { morning: [8, 12], afternoon: [12, 17], evening: [17, 24] };
+const PERIOD_RANGES = { morning: [8, 12], afternoon: [12, 17], evening: [17, 24] };
 
 const BookingPage = () => {
   const { currentUser } = useApp();
@@ -88,9 +85,7 @@ const BookingPage = () => {
   const [step, setStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
-  const [selectedTimePeriod, setSelectedTimePeriod] = useState<
-    "morning" | "afternoon" | "evening"
-  >("evening");
+  const [selectedTimePeriod, setSelectedTimePeriod] = useState("evening");
   const [formData, setFormData] = useState({
     date: "",
     time: "",
@@ -100,10 +95,10 @@ const BookingPage = () => {
     email: currentUser?.email || "",
     specialRequests: "",
     paymentMethod: "pay_at_restaurant",
-    assignedTable: null as Table | null,
+    assignedTable: null,
   });
-  const [tables, setTables] = useState<Table[]>([]);
-  const [takenTableIds, setTakenTableIds] = useState<string[]>([]);
+  const [tables, setTables] = useState([]);
+  const [takenTableIds, setTakenTableIds] = useState([]);
   const [isCheckingAvailability, setIsCheckingAvailability] = useState(false);
 
   useEffect(() => {
@@ -145,7 +140,7 @@ const BookingPage = () => {
   }, [formData.date, formData.time, formData.guests]);
 
   const getTimeSlotsByPeriod = (
-    period: "morning" | "afternoon" | "evening",
+    period,
   ) => {
     if (!formData.date) return [];
     const day = new Date(formData.date).getDay();
@@ -202,8 +197,17 @@ const BookingPage = () => {
     setIsSubmitting(true);
     setError("");
     try {
-      const newBooking: Booking = {
-        id: `B-${Math.floor(1000 + Math.random() * 9000)}-${Date.now().toString().slice(-4)}`,
+      const generateBookingId = () => {
+        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        let code = "";
+        for (let i = 0; i < 5; i++) {
+          code += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return `BK-${code}`;
+      };
+
+      const newBooking = {
+        id: generateBookingId(),
         userId: currentUser.id,
         name: formData.name,
         phone: formData.phone,
@@ -374,7 +378,7 @@ const BookingPage = () => {
                             key={period.id}
                             type="button"
                             onClick={() =>
-                              setSelectedTimePeriod(period.id as any)
+                              setSelectedTimePeriod(period.id)
                             }
                             className={`flex-1 py-3 px-4 rounded-xl border-2 font-bold text-sm transition-all ${selectedTimePeriod === period.id ? "border-primary bg-primary text-white shadow-md" : "border-gray-200 text-gray-600 hover:border-primary/50"}`}
                           >

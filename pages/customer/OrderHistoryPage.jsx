@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Package, ChevronRight, CheckCircle2, Clock } from "lucide-react";
-import { Order } from "../../types";
+
 import { Navigate, useNavigate, useLocation } from "react-router-dom";
 import { dbService } from "../../lib/db";
 import { useApp } from "../../context/AppContext";
@@ -9,7 +9,7 @@ const OrderHistoryPage = () => {
     const { currentUser } = useApp();
     const navigate = useNavigate();
     const location = useLocation();
-    const [orders, setOrders] = useState<Order[]>([]);
+    const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
 
     if (!currentUser) return <Navigate to="/login" replace />;
@@ -39,7 +39,7 @@ const OrderHistoryPage = () => {
         loadOrders();
     }, [currentUser, location.pathname]);
 
-    const getStatusColor = (status: string) => {
+    const getStatusColor = (status) => {
         switch (status) {
             case "Completed":
                 return "bg-green-100 text-green-700 border-green-200";
@@ -53,7 +53,7 @@ const OrderHistoryPage = () => {
         }
     };
 
-    const getStatusIcon = (status: string) => {
+    const getStatusIcon = (status) => {
         switch (status) {
             case "Completed":
                 return <CheckCircle2 size={16} className="mr-1" />;
@@ -65,7 +65,7 @@ const OrderHistoryPage = () => {
         }
     };
 
-    const getStatusText = (status: string) => {
+    const getStatusText = (status) => {
         switch (status) {
             case "Completed": return "Hoàn thành";
             case "Pending": return "Chờ xử lý";

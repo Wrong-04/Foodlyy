@@ -29,9 +29,6 @@ import { useApp } from "../context/AppContext";
 const PrivatePage = ({
   children,
   roles,
-}: {
-  children: React.ReactNode;
-  roles?: ("customer" | "admin")[];
 }) => (
   <ProtectedRoute allowedRoles={roles}>
     <Layout>{children}</Layout>
@@ -71,7 +68,7 @@ const AppRoutes = () => {
         path="/admin/*"
         element={
           <ProtectedRoute allowedRoles={["admin"]}>
-            <AdminPage user={currentUser!} onLogout={logout} />
+            <AdminPage user={currentUser} onLogout={logout} />
           </ProtectedRoute>
         }
       />

@@ -2,19 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { Search, LayoutDashboard, Plus, ChevronDown, Check } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { dbService } from '../../lib/db';
-import { Dish } from '../../types';
+
 import { useApp } from '../../context/AppContext';
 
 const MenuPage = () => {
    const { addToCart } = useApp();
    const navigate = useNavigate();
-   const [dishes, setDishes] = useState<Dish[]>([]);
+   const [dishes, setDishes] = useState([]);
    const [filter, setFilter] = useState('Tất cả');
    const [search, setSearch] = useState('');
-   const [sortBy, setSortBy] = useState<'popular' | 'price_asc' | 'price_desc'>('popular');
+   const [sortBy, setSortBy] = useState('popular');
    const [isSortOpen, setIsSortOpen] = useState(false);
-   const [addedItems, setAddedItems] = useState<{ [key: number]: boolean }>({});
-   const fmt = (p: number) => `${p.toLocaleString("vi-VN")}đ`;
+   const [addedItems, setAddedItems] = useState({});
+   const fmt = (p) => `${p.toLocaleString("vi-VN")}đ`;
 
    const categories = ['Tất cả', 'Món chính', 'Bún & Phở', 'Cơm', 'Khai vị', 'Đồ uống', 'Tráng miệng'];
 
@@ -43,7 +43,7 @@ const MenuPage = () => {
       return 0; // 'popular' - default order
    });
 
-   const handleAddToCart = (dish: Dish) => {
+   const handleAddToCart = (dish) => {
       addToCart(dish);
       setAddedItems(prev => ({ ...prev, [dish.id]: true }));
 
@@ -104,7 +104,7 @@ const MenuPage = () => {
                         ].map((option) => (
                            <button
                               key={option.id}
-                              onClick={() => { setSortBy(option.id as any); setIsSortOpen(false); }}
+                              onClick={() => { setSortBy(option.id); setIsSortOpen(false); }}
                               className={`w-full text-left px-4 py-3 hover:bg-orange-50 text-sm font-medium transition-colors flex items-center justify-between group
                              ${sortBy === option.id ? 'text-primary bg-orange-50/50' : 'text-textMain'}`}
                            >

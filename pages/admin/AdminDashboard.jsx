@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { ClipboardList, DollarSign, Users, TrendingUp } from "lucide-react";
 import { dbService } from "../../lib/db";
-import { OrderStatus, Order, Dish, User } from "../../types";
 
-const fmt = (p: number) => `${p.toLocaleString("vi-VN")}đ`;
 
-const STATUS_COLORS: Record<OrderStatus, string> = {
+const fmt = (p) => `${p.toLocaleString("vi-VN")}đ`;
+
+const STATUS_COLORS = {
   Completed: "bg-green-100 text-green-700",
   Cooking: "bg-orange-100 text-orange-700",
   Pending: "bg-blue-100 text-blue-700",
@@ -13,9 +13,9 @@ const STATUS_COLORS: Record<OrderStatus, string> = {
 };
 
 const AdminDashboard = () => {
-  const [orders, setOrders] = useState<Order[]>([]);
-  const [dishes, setDishes] = useState<Dish[]>([]);
-  const [users, setUsers] = useState<User[]>([]);
+  const [orders, setOrders] = useState([]);
+  const [dishes, setDishes] = useState([]);
+  const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {

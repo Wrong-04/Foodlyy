@@ -17,7 +17,7 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { Order } from "../../types";
+
 import { dbService } from "../../lib/db";
 import { useApp } from "../../context/AppContext";
 
@@ -25,10 +25,10 @@ const CheckoutPage = () => {
   const { cart, currentUser, clearCart } = useApp();
   const navigate = useNavigate();
   const [isProcessing, setIsProcessing] = useState(false);
-  const [deliveryOption, setDeliveryOption] = useState<"takeaway" | "delivery">(
+  const [deliveryOption, setDeliveryOption] = useState(
     "delivery"
   );
-  const [paymentMethod, setPaymentMethod] = useState<"cash" | "card">("cash");
+  const [paymentMethod, setPaymentMethod] = useState("cash");
   const [address, setAddress] = useState("");
   const [phone, setPhone] = useState("");
   const [note, setNote] = useState("");
@@ -65,9 +65,18 @@ const CheckoutPage = () => {
 
     setIsProcessing(true);
 
-    // Create new order
-    const orderId = `ORD-${Date.now()}`;
-    const newOrder: Order = {
+    // Generate random order code like ORD-K9B8J
+    const generateOrderId = () => {
+      const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+      let code = "";
+      for (let i = 0; i < 5; i++) {
+        code += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      return `ORD-${code}`;
+    };
+
+    const orderId = generateOrderId();
+    const newOrder = {
       id: orderId,
       userId: currentUser.id,
       customer: currentUser.name,

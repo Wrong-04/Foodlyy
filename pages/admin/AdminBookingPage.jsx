@@ -11,7 +11,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { dbService } from "../../lib/db";
-import { Booking, BookingStatus, Table } from "../../types";
+
 
 const ITEMS_PER_PAGE = 8;
 
@@ -35,17 +35,17 @@ const STATUS_CONFIG = {
 };
 
 const AdminBookingPage = () => {
-  const [bookings, setBookings] = useState<Booking[]>([]);
-  const [tables, setTables] = useState<Table[]>([]);
+  const [bookings, setBookings] = useState([]);
+  const [tables, setTables] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [statusFilter, setStatusFilter] = useState<BookingStatus | "all">(
+  const [statusFilter, setStatusFilter] = useState(
     "all",
   );
-  const [tableFilter, setTableFilter] = useState<string>("all");
+  const [tableFilter, setTableFilter] = useState("all");
   const [isLoading, setIsLoading] = useState(true);
 
   const [showRejectModal, setShowRejectModal] = useState(false);
-  const [rejectingBookingId, setRejectingBookingId] = useState<string | null>(
+  const [rejectingBookingId, setRejectingBookingId] = useState(
     null,
   );
   const [rejectReason, setRejectReason] = useState("");
@@ -72,9 +72,9 @@ const AdminBookingPage = () => {
   };
 
   const handleStatusChange = async (
-    id: string,
-    newStatus: BookingStatus,
-    reason?: string,
+    id,
+    newStatus,
+    reason,
   ) => {
     if (newStatus === "cancelled" && !reason) {
       setRejectingBookingId(id);
@@ -91,7 +91,7 @@ const AdminBookingPage = () => {
     );
 
     try {
-      const updates: Partial<Booking> = { status: newStatus };
+      const updates = { status: newStatus };
       if (reason) updates.rejectReason = reason;
       await dbService.updateBooking(id, updates);
     } catch (error) {
@@ -169,7 +169,7 @@ const AdminBookingPage = () => {
             <Filter size={14} className="text-gray-400" />
             <select
               value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value as any)}
+              onChange={(e) => setStatusFilter(e.target.value)}
               className="bg-transparent border-none text-sm font-bold text-textMain outline-none min-w-[124px]"
             >
               <option value="all">Tất cả trạng thái</option>

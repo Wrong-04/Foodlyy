@@ -2,36 +2,35 @@ import { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Search, Plus, ChevronDown, Check, UtensilsCrossed, Heart, Star, Clock, LayoutDashboard } from "lucide-react";
 import { dbService } from "../../lib/db";
-import { Dish } from "../../types";
+
 import { useApp } from "../../context/AppContext";
 
 const CATEGORIES = ["Món chính", "Bún & Phở", "Cơm", "Khai vị", "Đồ uống", "Tráng miệng"];
-const PRICE_RANGES = [
-  { label: "Tất cả giá", value: "all" },
-  { label: "Dưới 100k", value: "under100" },
-  { label: "100k – 200k", value: "100to200" },
-  { label: "Trên 200k", value: "over200" },
-];
-
 const HomePage = () => {
   const { addToCart, wishlist = [], toggleWishlist } = useApp();
   const navigate = useNavigate();
-  const [dishes, setDishes] = useState<Dish[]>([]);
+  const [dishes, setDishes] = useState([]);
   const [search, setSearch] = useState("");
-  const [onlyBestSeller, setOnlyBestSeller] = useState(false);
-  const [priceRange, setPriceRange] = useState("all");
-  const [selectedCats, setSelectedCats] = useState<string[]>([]);
-  const [sortBy, setSortBy] = useState<
-    "popular" | "price_asc" | "price_desc" | "name_asc" | "name_desc"
-  >("popular");
+  const [onlyBestSeller, setOnlyBestSeller] = useState(true);
+  const [minPrice, setMinPrice] = useState(0);
+  const [maxPrice, setMaxPrice] = useState(300000);
+  const [absoluteMax, setAbsoluteMax] = useState(300000);
+  const [isPriceOpen, setIsPriceOpen] = useState(false);
+  const [selectedCats, setSelectedCats] = useState([]);
+  const [sortBy, setSortBy] = useState("popular");
   const [isSortOpen, setIsSortOpen] = useState(false);
-  const [addedId, setAddedId] = useState<number | null>(null);
+  const [addedId, setAddedId] = useState(null);
 
   useEffect(() => {
     const loadDishes = async () => {
       try {
         const loadedDishes = await dbService.getDishes();
         setDishes(loadedDishes);
+        if (loadedDishes.length > 0) {
+          const max = Math.max(...loadedDishes.map((d) => d.price));
+          setAbsoluteMax(max);
+          setMaxPrice(max);
+        }
       } catch (error) {
         console.error("Failed to load dishes:", error);
       }
@@ -39,7 +38,7 @@ const HomePage = () => {
     loadDishes();
   }, []);
 
-  const toggleCat = (cat: string) =>
+  const toggleCat = (cat) =>
     setSelectedCats((prev) =>
       prev.includes(cat) ? prev.filter((c) => c !== cat) : [...prev, cat],
     );
@@ -49,13 +48,7 @@ const HomePage = () => {
       dishes
         .filter((dish) => {
           if (onlyBestSeller && !dish.isBestSeller) return false;
-          if (priceRange === "under100" && dish.price >= 100000) return false;
-          if (
-            priceRange === "100to200" &&
-            (dish.price < 100000 || dish.price > 200000)
-          )
-            return false;
-          if (priceRange === "over200" && dish.price <= 200000) return false;
+          if (dish.price < minPrice || dish.price > maxPrice) return false;
           if (selectedCats.length > 0 && !selectedCats.includes(dish.category))
             return false;
           if (search && !dish.name.toLowerCase().includes(search.toLowerCase()))
@@ -69,16 +62,16 @@ const HomePage = () => {
           if (sortBy === "name_desc") return b.name.localeCompare(a.name);
           return 0; // popular
         }),
-    [dishes, onlyBestSeller, priceRange, selectedCats, search, sortBy],
+    [dishes, onlyBestSeller, minPrice, maxPrice, selectedCats, search, sortBy],
   );
 
-  const handleAdd = (dish: Dish) => {
+  const handleAdd = (dish) => {
     addToCart(dish);
     setAddedId(dish.id);
     setTimeout(() => setAddedId(null), 1200);
   };
 
-  const fmt = (p: number) => `${p.toLocaleString("vi-VN")}đ`;
+  const fmt = (p) => `${p.toLocaleString("vi-VN")}đ`;
 
   return (
     <div>
@@ -223,23 +216,74 @@ const HomePage = () => {
                 ))}
               </div>
 
-              {/* Price Range select */}
-              <div className="relative">
-                <ChevronDown
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
-                  size={14}
-                />
-                <select
-                  value={priceRange}
-                  onChange={(e) => setPriceRange(e.target.value)}
-                  className="h-10 pl-4 pr-9 rounded-xl bg-white border border-gray-200 text-sm font-medium focus:ring-2 focus:ring-primary outline-none appearance-none cursor-pointer"
+              {/* Price Range Custom Slider Dropdown */}
+              <div className="relative z-20">
+                <button
+                  onClick={() => setIsPriceOpen(!isPriceOpen)}
+                  className="flex items-center gap-2 px-4 h-10 bg-white rounded-xl border border-gray-200 text-sm font-medium text-textMain hover:border-primary/50 transition-all"
                 >
-                  {PRICE_RANGES.map((r) => (
-                    <option key={r.value} value={r.value}>
-                      {r.label}
-                    </option>
-                  ))}
-                </select>
+                  <span className="font-bold">
+                    {minPrice === 0 && maxPrice === absoluteMax
+                      ? "Tất cả giá"
+                      : `${fmt(minPrice)} - ${fmt(maxPrice)}`}
+                  </span>
+                  <ChevronDown
+                    size={14}
+                    className={`text-gray-400 transition-transform ${isPriceOpen ? "rotate-180" : ""}`}
+                  />
+                </button>
+                {isPriceOpen && (
+                  <div className="absolute left-0 top-11 w-64 bg-white rounded-xl shadow-xl border border-gray-100 p-5 space-y-4">
+                    <div className="space-y-1">
+                      <div className="flex justify-between text-xs text-textSec font-bold">
+                        <span>Giá thấp nhất</span>
+                        <span className="text-primary font-black">{fmt(minPrice)}</span>
+                      </div>
+                      <input
+                        type="range"
+                        min="0"
+                        max={absoluteMax}
+                        step="5000"
+                        value={minPrice}
+                        onChange={(e) => setMinPrice(Math.min(Number(e.target.value), maxPrice - 5000))}
+                        className="w-full accent-primary h-1.5 bg-gray-100 rounded-lg appearance-none cursor-pointer"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <div className="flex justify-between text-xs text-textSec font-bold">
+                        <span>Giá cao nhất</span>
+                        <span className="text-primary font-black">{fmt(maxPrice)}</span>
+                      </div>
+                      <input
+                        type="range"
+                        min="0"
+                        max={absoluteMax}
+                        step="5000"
+                        value={maxPrice}
+                        onChange={(e) => setMaxPrice(Math.max(Number(e.target.value), minPrice + 5000))}
+                        className="w-full accent-primary h-1.5 bg-gray-100 rounded-lg appearance-none cursor-pointer"
+                      />
+                    </div>
+                    <div className="flex gap-2 pt-2">
+                      <button
+                        onClick={() => {
+                          setMinPrice(0);
+                          setMaxPrice(absoluteMax);
+                          setIsPriceOpen(false);
+                        }}
+                        className="flex-1 py-2 text-xs font-bold text-gray-500 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+                      >
+                        Đặt lại
+                      </button>
+                      <button
+                        onClick={() => setIsPriceOpen(false)}
+                        className="flex-1 py-2 text-xs font-bold text-white bg-primary rounded-lg hover:bg-primaryDark transition-colors shadow-md shadow-primary/10"
+                      >
+                        Áp dụng
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Sort Dropdown */}
@@ -277,7 +321,7 @@ const HomePage = () => {
                       <button
                         key={opt.id}
                         onClick={() => {
-                          setSortBy(opt.id as any);
+                          setSortBy(opt.id);
                           setIsSortOpen(false);
                         }}
                         className={`w-full text-left px-4 py-3 hover:bg-orange-50 text-sm font-medium transition-colors flex items-center justify-between ${sortBy === opt.id
