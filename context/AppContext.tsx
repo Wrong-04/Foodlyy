@@ -1,5 +1,5 @@
-﻿import React, { createContext, useContext, useState, useEffect } from "react";
-import { dbService } from "../databaseService";
+import React, { createContext, useContext, useState, useEffect } from "react";
+import { dbService } from "../lib/db";
 import { User, CartItem, Dish } from "../types";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
