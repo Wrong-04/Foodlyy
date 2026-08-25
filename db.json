@@ -7,7 +7,8 @@
       "price": 89000,
       "image": "https://pholyquocsu.vn/wp-content/uploads/2019/09/PhoDacBiet.jpg",
       "category": "Bún & Phở",
-      "isBestSeller": true
+      "isBestSeller": true,
+      "isAvailable": false
     },
     {
       "id": 2,
@@ -552,7 +553,38 @@
       "email": "an@foodly.com",
       "password": "123456",
       "role": "customer",
-      "cart": [],
+      "cart": [
+        {
+          "id": 12,
+          "name": "Gỏi Đu Đủ Tôm Thịt",
+          "description": "Đu đủ xanh bào sợi, tôm khô, thịt ba chỉ, đậu phộng rang, nước mắm chua ngọt thơm lừng.",
+          "price": 55000,
+          "image": "https://i-giadinh.vnecdn.net/2023/06/11/Thnhphm11-1686458076-6150-1686458078.jpg",
+          "category": "Khai vị",
+          "isBestSeller": false,
+          "quantity": 1
+        },
+        {
+          "id": 13,
+          "name": "Chả Giò Chiên Giòn",
+          "description": "Chả giò nhân thịt heo, miến, nấm mèo chiên vàng giòn, ăn kèm rau sống và nước chấm.",
+          "price": 55000,
+          "image": "https://i.ytimg.com/vi/xXhweAEmOFs/maxresdefault.jpg",
+          "category": "Khai vị",
+          "isBestSeller": false,
+          "quantity": 1
+        },
+        {
+          "id": 11,
+          "name": "Gỏi Cuốn Tôm Thịt",
+          "description": "Gỏi cuốn tươi với tôm luộc, thịt heo, bún tươi, rau thơm, chấm tương hoisin đậu phộng.",
+          "price": 45000,
+          "image": "https://cdn2.fptshop.com.vn/unsafe/1920x0/filters:format(webp):quality(75)/2023_10_23_638336957766719361_cach-lam-goi-cuon.jpg",
+          "category": "Khai vị",
+          "isBestSeller": true,
+          "quantity": 1
+        }
+      ],
       "wishlist": []
     },
     {
