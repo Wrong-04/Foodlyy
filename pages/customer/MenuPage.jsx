@@ -126,8 +126,13 @@ const MenuPage = () => {
                      onClick={() => navigate(`/dish/${dish.id}`)}
                      className="relative w-full aspect-[4/3] overflow-hidden cursor-pointer"
                   >
-                     <img src={dish.image} alt={dish.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                     <img src={dish.image} alt={dish.name} className={`w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 ${dish.isAvailable === false ? 'grayscale' : ''}`} />
                      {dish.isBestSeller && <div className="absolute top-3 left-3 bg-white/90 px-3 py-1 rounded-full text-[10px] font-bold text-primary backdrop-blur-sm shadow-sm">Bán chạy</div>}
+                     {dish.isAvailable === false && (
+                        <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                           <span className="bg-red-600 text-white px-4 py-1.5 rounded-full text-xs font-black shadow-lg uppercase">Hết hàng</span>
+                        </div>
+                     )}
                   </div>
                   <div className="p-5 flex flex-col flex-1">
                      <div className="flex justify-between items-start mb-2 gap-2">
@@ -142,13 +147,19 @@ const MenuPage = () => {
                      <p className="text-textSec text-sm font-normal leading-relaxed mb-6 line-clamp-2">{dish.description}</p>
                      <div className="mt-auto">
                         <button
+                           disabled={dish.isAvailable === false}
                            onClick={() => handleAddToCart(dish)}
-                           className={`w-full h-11 flex items-center justify-center gap-2 rounded-xl font-bold text-sm shadow-lg transition-all duration-300 active:scale-95 ${addedItems[dish.id]
-                              ? 'bg-green-500 text-white shadow-green-500/30'
-                              : 'bg-primary text-white shadow-primary/30 hover:bg-primary/90'
+                           className={`w-full h-11 flex items-center justify-center gap-2 rounded-xl font-bold text-sm shadow-lg transition-all duration-300 active:scale-95 ${
+                              dish.isAvailable === false
+                                 ? 'bg-gray-100 text-gray-400 cursor-not-allowed shadow-none'
+                                 : addedItems[dish.id]
+                                    ? 'bg-green-500 text-white shadow-green-500/30'
+                                    : 'bg-primary text-white shadow-primary/30 hover:bg-primary/90'
                               }`}
                         >
-                           {addedItems[dish.id] ? (
+                           {dish.isAvailable === false ? (
+                              <span>Hết hàng</span>
+                           ) : addedItems[dish.id] ? (
                               <>
                                  <Check size={18} strokeWidth={3} className="animate-[bounce_0.5s_ease-in-out]" />
                                  <span>Đã thêm!</span>

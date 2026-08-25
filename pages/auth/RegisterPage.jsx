@@ -14,7 +14,15 @@ const RegisterPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
-    const { error: err } = await register({ name, email, password, role: "customer" });
+    if (!name.trim()) {
+      setError("Vui lòng nhập họ và tên hợp lệ.");
+      return;
+    }
+    if (password.length < 6) {
+      setError("Mật khẩu mới phải có ít nhất 6 ký tự!");
+      return;
+    }
+    const { error: err } = await register({ name: name.trim(), email, password, role: "customer" });
     if (err) {
       setError(err);
       return;

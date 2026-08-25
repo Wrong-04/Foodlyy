@@ -159,9 +159,15 @@ const FoodDetailPage = () => {
                                 <span className="px-3 py-1 bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-widest rounded-lg">
                                     {dish.category}
                                 </span>
-                                <span className="flex items-center gap-1 text-green-600 text-xs font-bold">
-                                    <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div> Còn hàng
-                                </span>
+                                {dish.isAvailable !== false ? (
+                                    <span className="flex items-center gap-1 text-green-600 text-xs font-bold">
+                                        <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div> Còn hàng
+                                    </span>
+                                ) : (
+                                    <span className="flex items-center gap-1 text-red-600 text-xs font-bold">
+                                        <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div> Hết hàng
+                                    </span>
+                                )}
                             </div>
                             <h1 className="text-4xl lg:text-5xl font-extrabold text-textMain tracking-tight">
                                 {dish.name}
@@ -178,18 +184,19 @@ const FoodDetailPage = () => {
                                     <p className="text-4xl font-black text-primary">{fmt(dish.price)}</p>
                                 </div>
 
-                                <div className="flex items-center gap-4 bg-background p-2 rounded-2xl border border-gray-100">
+                                <div className={`flex items-center gap-4 bg-background p-2 rounded-2xl border border-gray-100 ${dish.isAvailable === false ? 'opacity-40 pointer-events-none' : ''}`}>
                                     <button
                                         onClick={() => setQuantity(Math.max(1, quantity - 1))}
                                         className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-textMain hover:bg-white hover:text-primary transition-all shadow-sm disabled:opacity-50"
-                                        disabled={quantity <= 1}
+                                        disabled={quantity <= 1 || dish.isAvailable === false}
                                     >
                                         <Minus size={18} />
                                     </button>
-                                    <span className="w-8 text-center font-bold text-lg">{quantity}</span>
+                                    <span className="w-8 text-center font-bold text-lg">{dish.isAvailable === false ? 0 : quantity}</span>
                                     <button
                                         onClick={() => setQuantity(quantity + 1)}
                                         className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-textMain hover:bg-white hover:text-primary transition-all shadow-sm"
+                                        disabled={dish.isAvailable === false}
                                     >
                                         <Plus size={18} />
                                     </button>
@@ -200,13 +207,18 @@ const FoodDetailPage = () => {
                             <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <button
                                     onClick={handleAddToCart}
-                                    disabled={addedAnimating}
-                                    className={`relative overflow-hidden h-14 rounded-2xl font-extrabold text-lg flex items-center justify-center gap-3 transition-all duration-300 active:scale-[0.98] ${addedAnimating
-                                        ? "bg-green-500 text-white"
-                                        : "bg-primary text-white hover:bg-primaryDark shadow-xl shadow-primary/20"
+                                    disabled={addedAnimating || dish.isAvailable === false}
+                                    className={`relative overflow-hidden h-14 rounded-2xl font-extrabold text-lg flex items-center justify-center gap-3 transition-all duration-300 active:scale-[0.98] ${
+                                        dish.isAvailable === false
+                                            ? "bg-gray-100 text-gray-400 cursor-not-allowed shadow-none"
+                                            : addedAnimating
+                                                ? "bg-green-500 text-white"
+                                                : "bg-primary text-white hover:bg-primaryDark shadow-xl shadow-primary/20"
                                         }`}
                                 >
-                                    {addedAnimating ? (
+                                    {dish.isAvailable === false ? (
+                                        "Hết hàng"
+                                    ) : addedAnimating ? (
                                         <span className="flex items-center gap-2 animate-in fade-in zoom-in duration-300">
                                             <Check size={24} strokeWidth={3} /> Đã thêm!
                                         </span>
