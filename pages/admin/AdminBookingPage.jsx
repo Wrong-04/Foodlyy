@@ -11,6 +11,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { dbService } from "../../lib/db";
+import Pagination from "../../components/admin/Pagination";
 
 
 const ITEMS_PER_PAGE = 8;
@@ -24,13 +25,21 @@ const STATUS_CONFIG = {
     label: "ĐÃ XÁC NHẬN",
     color: "bg-green-100 text-green-700 border-green-200",
   },
-  cancelled: {
-    label: "ĐÃ HỦY",
-    color: "bg-red-100 text-red-700 border-red-200",
+  arrived: {
+    label: "KHÁCH ĐÃ ĐẾN",
+    color: "bg-orange-100 text-orange-700 border-orange-200",
   },
   completed: {
     label: "ĐÃ HOÀN THÀNH",
     color: "bg-gray-100 text-gray-700 border-gray-200",
+  },
+  cancelled: {
+    label: "ĐÃ HỦY",
+    color: "bg-red-100 text-red-700 border-red-200",
+  },
+  no_show: {
+    label: "KHÁCH KHÔNG ĐẾN",
+    color: "bg-gray-800 text-white border-gray-900",
   },
 };
 
@@ -175,8 +184,10 @@ const AdminBookingPage = () => {
               <option value="all">Tất cả trạng thái</option>
               <option value="pending">Chờ xác nhận</option>
               <option value="confirmed">Đã xác nhận</option>
+              <option value="arrived">Khách đã đến (Đang phục vụ)</option>
               <option value="completed">Đã hoàn thành</option>
               <option value="cancelled">Đã hủy</option>
+              <option value="no_show">Khách không đến (Quá giờ)</option>
             </select>
           </div>
 
@@ -219,6 +230,15 @@ const AdminBookingPage = () => {
                   const statusConfig = STATUS_CONFIG[booking.status];
                   const tableName =
                     tables.find((t) => t.id === booking.tableId)?.name || "N/A";
+                  
+                  // Calculate if the booking time has passed
+                  let isOverdue = false;
+                  if (booking.status === "confirmed" && booking.date && booking.time) {
+                    const bookingDateTime = new Date(`${booking.date}T${booking.time}`);
+                    if (!isNaN(bookingDateTime) && bookingDateTime < new Date()) {
+                      isOverdue = true;
+                    }
+                  }
 
                   return (
                     <tr
@@ -248,6 +268,11 @@ const AdminBookingPage = () => {
                           <Clock size={14} className="text-primary" />{" "}
                           {booking.time}
                         </div>
+                        {isOverdue && (
+                          <div className="text-[10px] text-white bg-red-500 font-bold uppercase inline-block px-2 py-1 rounded mt-2 animate-pulse shadow-sm shadow-red-500/20">
+                            Quá giờ (Chưa đến)
+                          </div>
+                        )}
                         {booking.status === "cancelled" &&
                           booking.rejectReason && (
                             <div className="text-[10px] text-red-600 bg-red-50 inline-block px-2 py-1 rounded mt-1 border border-red-100 italic">
@@ -297,11 +322,27 @@ const AdminBookingPage = () => {
                             </>
                           )}
                           {booking.status === "confirmed" && (
+                            <>
+                              <button
+                                onClick={() => handleStatusChange(booking.id, "arrived")}
+                                className="px-3 py-1.5 rounded-lg bg-orange-100 text-orange-700 font-bold text-[10px] uppercase hover:bg-orange-200 transition-colors shadow-sm"
+                                title="Khách đã đến quán"
+                              >
+                                Khách Đã đến
+                              </button>
+                              <button
+                                onClick={() => handleStatusChange(booking.id, "no_show")}
+                                className="px-3 py-1.5 rounded-lg bg-gray-800 text-white font-bold text-[10px] uppercase hover:bg-black transition-colors shadow-sm"
+                                title="Khách không đến (Quá giờ)"
+                              >
+                                Không đến
+                              </button>
+                            </>
+                          )}
+                          {booking.status === "arrived" && (
                             <button
-                              onClick={() =>
-                                handleStatusChange(booking.id, "completed")
-                              }
-                              className="px-3 py-1.5 rounded-lg bg-gray-100 text-gray-700 font-bold text-xs hover:bg-gray-200 transition-colors"
+                              onClick={() => handleStatusChange(booking.id, "completed")}
+                              className="px-3 py-1.5 rounded-lg bg-gray-100 text-gray-700 font-bold text-[10px] uppercase hover:bg-gray-200 transition-colors"
                             >
                               Hoàn thành
                             </button>
@@ -334,55 +375,13 @@ const AdminBookingPage = () => {
         </div>
       </div>
 
-      {filteredBookings.length > 0 && (
-        <div className="flex items-center justify-between bg-white p-4 rounded-2xl border border-gray-100 shadow-sm">
-          <p className="text-[10px] font-black text-textSec uppercase tracking-widest">
-            Hiển thị{" "}
-            <span className="text-primary">
-              {(currentPage - 1) * ITEMS_PER_PAGE + 1}
-            </span>{" "}
-            -{" "}
-            <span className="text-primary">
-              {Math.min(currentPage * ITEMS_PER_PAGE, filteredBookings.length)}
-            </span>{" "}
-            của <span className="text-primary">{filteredBookings.length}</span>{" "}
-            đặt bàn
-          </p>
-          <div className="flex gap-2">
-            <button
-              disabled={currentPage === 1}
-              onClick={() => setCurrentPage((p) => p - 1)}
-              className="p-2.5 rounded-xl border border-gray-100 hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-all hover:border-primary/30 group"
-            >
-              <ChevronLeft
-                size={18}
-                className="group-hover:-translate-x-0.5 transition-transform"
-              />
-            </button>
-            <div className="flex gap-1.5">
-              {[...Array(totalPages)].map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setCurrentPage(i + 1)}
-                  className={`w-10 h-10 rounded-xl text-xs font-black transition-all ${currentPage === i + 1 ? "bg-primary text-white shadow-lg shadow-primary/20 scale-105" : "bg-gray-50 text-textSec hover:bg-white hover:border-gray-200 border border-transparent"}`}
-                >
-                  {i + 1}
-                </button>
-              ))}
-            </div>
-            <button
-              disabled={currentPage === totalPages}
-              onClick={() => setCurrentPage((p) => p + 1)}
-              className="p-2.5 rounded-xl border border-gray-100 hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-all hover:border-primary/30 group"
-            >
-              <ChevronRight
-                size={18}
-                className="group-hover:translate-x-0.5 transition-transform"
-              />
-            </button>
-          </div>
-        </div>
-      )}
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        totalItems={filteredBookings.length}
+        itemsPerPage={ITEMS_PER_PAGE}
+        onPageChange={setCurrentPage}
+      />
 
       {/* Reject Modal */}
       {showRejectModal && (

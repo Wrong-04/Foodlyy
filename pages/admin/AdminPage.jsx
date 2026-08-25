@@ -6,6 +6,7 @@ import AdminOrders from "./AdminOrders";
 import AdminBookingPage from "./AdminBookingPage";
 import AdminMenu from "./AdminMenu";
 import AdminUsers from "./AdminUsers";
+import AdminTables from "./AdminTables";
 
 
 
@@ -17,6 +18,7 @@ const AdminPage = ({ user, onLogout }) => (
       <Route path="bookings" element={<AdminBookingPage />} />
       <Route path="menu" element={<AdminMenu />} />
       <Route path="users" element={<AdminUsers />} />
+      <Route path="tables" element={<AdminTables />} />
       <Route path="*" element={<Navigate to="/admin" replace />} />
     </Routes>
   </AdminLayout>

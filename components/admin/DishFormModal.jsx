@@ -15,6 +15,7 @@ const DishFormModal = ({ isOpen, onClose, onSubmit, initialData, title }) => {
         image: "",
         category: "Món chính",
         isBestSeller: false,
+        isAvailable: true,
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -27,6 +28,7 @@ const DishFormModal = ({ isOpen, onClose, onSubmit, initialData, title }) => {
                 image: initialData.image,
                 category: initialData.category,
                 isBestSeller: initialData.isBestSeller || false,
+                isAvailable: initialData.isAvailable !== undefined ? initialData.isAvailable : true,
             });
         } else {
             // Reset form on open for new dish
@@ -37,6 +39,7 @@ const DishFormModal = ({ isOpen, onClose, onSubmit, initialData, title }) => {
                 image: "",
                 category: "Món chính",
                 isBestSeller: false,
+                isAvailable: true,
             });
         }
     }, [initialData, isOpen]);
@@ -136,17 +139,31 @@ const DishFormModal = ({ isOpen, onClose, onSubmit, initialData, title }) => {
                         />
                     </div>
 
-                    <div className="flex items-center gap-3 p-4 bg-orange-50 rounded-xl border border-orange-100">
-                        <input
-                            type="checkbox"
-                            id="isBestSeller"
-                            checked={formData.isBestSeller}
-                            onChange={(e) => setFormData({ ...formData, isBestSeller: e.target.checked })}
-                            className="w-5 h-5 rounded text-primary focus:ring-primary border-gray-300 cursor-pointer accent-primary"
-                        />
-                        <label htmlFor="isBestSeller" className="text-sm font-bold text-orange-800 cursor-pointer select-none">
-                            Đánh dấu là món Bán chạy (Best Seller)
-                        </label>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="flex items-center gap-3 p-4 bg-orange-50 rounded-xl border border-orange-100">
+                            <input
+                                type="checkbox"
+                                id="isBestSeller"
+                                checked={formData.isBestSeller}
+                                onChange={(e) => setFormData({ ...formData, isBestSeller: e.target.checked })}
+                                className="w-5 h-5 rounded text-primary focus:ring-primary border-gray-300 cursor-pointer accent-primary"
+                            />
+                            <label htmlFor="isBestSeller" className="text-sm font-bold text-orange-800 cursor-pointer select-none">
+                                Món Bán chạy (Best Seller)
+                            </label>
+                        </div>
+                        <div className="flex items-center gap-3 p-4 bg-green-50 rounded-xl border border-green-100">
+                            <input
+                                type="checkbox"
+                                id="isAvailable"
+                                checked={formData.isAvailable}
+                                onChange={(e) => setFormData({ ...formData, isAvailable: e.target.checked })}
+                                className="w-5 h-5 rounded text-green-600 focus:ring-green-500 border-gray-300 cursor-pointer accent-green-600"
+                            />
+                            <label htmlFor="isAvailable" className="text-sm font-bold text-green-800 cursor-pointer select-none">
+                                Còn hàng (Sẵn sàng phục vụ)
+                            </label>
+                        </div>
                     </div>
 
                     {/* Image Preview */}

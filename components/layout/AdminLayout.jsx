@@ -1,7 +1,7 @@
 import React from "react";
 import {
   LayoutDashboard, ShoppingCart, UtensilsCrossed,
-  Users, LogOut, ChefHat, ChevronRight, CalendarDays,
+  Users, LogOut, ChefHat, ChevronRight, CalendarDays, Grid
 } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -13,12 +13,14 @@ const TAB_PATHS = {
   bookings: "/admin/bookings",
   menu: "/admin/menu",
   users: "/admin/users",
+  tables: "/admin/tables",
 };
 
 const NAV_ITEMS = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
   { id: "orders",    label: "Đơn hàng",  icon: ShoppingCart },
   { id: "bookings",  label: "Đặt bàn",   icon: CalendarDays },
+  { id: "tables",    label: "Bàn ăn",    icon: Grid },
   { id: "menu",      label: "Thực đơn",  icon: UtensilsCrossed },
   { id: "users",     label: "Người dùng",icon: Users },
 ];

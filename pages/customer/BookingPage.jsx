@@ -122,8 +122,10 @@ const BookingPage = () => {
           .map((b) => b.tableId);
         setTakenTableIds(taken);
         if (formData.assignedTable) {
+          const currentTable = allTables.find((t) => t.id === formData.assignedTable?.id);
           const stillValid =
-            allTables.find((t) => t.id === formData.assignedTable?.id) &&
+            currentTable &&
+            currentTable.status !== "maintenance" &&
             !taken.includes(formData.assignedTable.id) &&
             formData.assignedTable.capacity >= formData.guests;
           if (!stillValid)
@@ -234,7 +236,7 @@ const BookingPage = () => {
   const availableTables = tables.filter(
     (t) =>
       !takenTableIds.includes(t.id) &&
-      t.status === "available" &&
+      t.status !== "maintenance" &&
       t.capacity >= formData.guests,
   );
 
@@ -436,7 +438,7 @@ const BookingPage = () => {
                       {tables.map((table) => {
                         const isTaken =
                           takenTableIds.includes(table.id) ||
-                          table.status === "unavailable";
+                          table.status === "maintenance";
                         const isDisabled =
                           isTaken || table.capacity < formData.guests;
                         const isSelected =
@@ -456,7 +458,9 @@ const BookingPage = () => {
                             {isDisabled && (
                               <div className="absolute inset-0 bg-white/40 flex items-center justify-center z-10 backdrop-blur-[1px]">
                                 <span className="bg-white/90 text-gray-500 text-[10px] font-bold px-2 py-1 rounded-full shadow-sm">
-                                  {isTaken
+                                  {table.status === "maintenance"
+                                    ? "Bảo trì"
+                                    : takenTableIds.includes(table.id)
                                     ? "Đã đặt"
                                     : `Cần ${formData.guests} chỗ`}
                                 </span>
@@ -753,10 +757,10 @@ const BookingPage = () => {
                   Xem đặt chỗ của tôi
                 </button>
                 <button
-                  onClick={() => navigate("/menu")}
+                  onClick={() => window.location.reload()}
                   className="px-8 py-4 bg-gray-100 text-gray-800 font-bold rounded-xl hover:bg-gray-200 transition-colors"
                 >
-                  Khám phá thực đơn
+                  Đặt thêm bàn khác
                 </button>
                 <button
                   onClick={() => navigate("/")}

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Search, Plus, Bell, Filter, Edit2, Trash2, ChevronLeft, ChevronRight, LayoutDashboard } from 'lucide-react';
 import { dbService } from '../../lib/db';
+import Pagination from '../../components/admin/Pagination';
 
 import DishFormModal from '../../components/admin/DishFormModal';
 
@@ -103,61 +104,53 @@ const AdminMenu = () => {
     return (
         <div className="flex flex-col h-full bg-background rounded-3xl p-6 shadow-sm border border-gray-100">
             {/* Header */}
-            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-8">
-                <div className="flex items-center gap-3">
-
-                    <h1 className="text-2xl font-black text-textMain">Quản lý thực đơn</h1>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+                <div>
+                    <h2 className="text-2xl font-extrabold text-textMain mb-1">
+                        Quản lý thực đơn
+                    </h2>
+                    <p className="text-textSec text-sm">Tổng cộng {dishes.length} món ăn</p>
                 </div>
+                <button
+                    onClick={() => setIsAddModalOpen(true)}
+                    className="flex items-center justify-center gap-2 bg-primary text-white font-bold h-11 px-6 rounded-xl hover:bg-primaryDark transition-all shadow-md shadow-primary/20 shrink-0 self-start sm:self-auto cursor-pointer"
+                >
+                    <Plus size={18} /> Thêm món mới
+                </button>
+            </div>
 
-                <div className="flex flex-1 max-w-2xl items-center gap-4">
-                    <div className="relative flex-1">
-                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+            {/* Content Area */}
+            <div className="flex-1 bg-[#FFF8F5] rounded-3xl p-6 shadow-inner overflow-y-auto min-h-0 relative">
+                
+                {/* Search & Filter */}
+                <div className="flex flex-col md:flex-row gap-4 mb-8">
+                    <div className="relative flex-1 max-w-2xl">
+                        <Search size={16} className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400" />
                         <input
                             type="text"
                             placeholder="Tìm kiếm món ăn..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-full h-12 pl-12 pr-4 rounded-full bg-white border border-transparent focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all shadow-sm text-sm"
+                            className="w-full pl-14 pr-4 h-12 rounded-2xl bg-white border border-gray-100 text-sm outline-none focus:ring-4 focus:ring-primary/10 shadow-sm transition-all placeholder:text-gray-300 font-medium"
                         />
                     </div>
 
-                    <button
-                        onClick={() => setIsAddModalOpen(true)}
-                        className="h-12 px-6 bg-primary text-white rounded-full font-bold text-sm hover:bg-primaryDark transition-all flex items-center gap-2 shadow-lg shadow-primary/25 shrink-0"
-                    >
-                        <Plus size={20} /> Thêm món mới
-                    </button>
-
-
-                </div>
-            </div>
-
-            {/* Content Area */}
-            <div className="flex-1 bg-[#FFF8F5] rounded-3xl p-6 shadow-inner overflow-y-auto min-h-0 relative">
-
-                {/* Filters */}
-                <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
-                    <div className="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar pl-1">
-                        {CATEGORIES.map(cat => (
-                            <button
-                                key={cat}
-                                onClick={() => setActiveCategory(cat)}
-                                className={`flex items-center justify-center h-10 px-6 rounded-full text-sm font-bold transition-all whitespace-nowrap ${activeCategory === cat
-                                    ? "bg-primary text-white shadow-md shadow-primary/20"
-                                    : "bg-white text-gray-500 hover:text-textMain hover:bg-gray-50 shadow-sm"
-                                    }`}
+                    <div className="flex flex-wrap gap-3 items-center">
+                        <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-xl px-3 h-12 shadow-sm">
+                            <Filter size={14} className="text-gray-400" />
+                            <select
+                                value={activeCategory}
+                                onChange={(e) => setActiveCategory(e.target.value)}
+                                className="bg-transparent border-none text-sm font-bold text-textMain outline-none min-w-[140px] cursor-pointer"
                             >
-                                {cat}
-                                {cat === "Tất cả" && (
-                                    <span className={`ml-2 px-1.5 py-0.5 rounded-full text-[10px] ${activeCategory === cat ? 'bg-white/20' : 'bg-gray-100'}`}>
-                                        {dishes.length}
-                                    </span>
-                                )}
-                            </button>
-                        ))}
+                                {CATEGORIES.map(cat => (
+                                    <option key={cat} value={cat}>
+                                        {cat} {cat === "Tất cả" ? `(${dishes.length})` : ""}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
                     </div>
-
-
                 </div>
 
                 {/* Grid */}
@@ -173,7 +166,7 @@ const AdminMenu = () => {
                                     <img
                                         src={dish.image}
                                         alt={dish.name}
-                                        className={`w-full h-full object-cover transition-transform duration-500 hover:scale-110 ${false /* dish.isAvailable === false */ ? 'grayscale opacity-70' : ''}`}
+                                        className={`w-full h-full object-cover transition-transform duration-500 hover:scale-110 ${dish.isAvailable === false ? 'grayscale opacity-70' : ''}`}
                                     />
                                     <div className="absolute top-3 left-3 flex flex-col gap-1.5 items-start">
                                         {dish.isBestSeller && (
@@ -181,12 +174,12 @@ const AdminMenu = () => {
                                                 Bán chạy
                                             </span>
                                         )}
-                                        <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider shadow-sm ${true /* dish.isAvailable !== false */ ? 'bg-green-500 text-white' : 'bg-white/90 text-gray-500'}`}>
-                                            {true /* dish.isAvailable !== false */ ? 'Còn hàng' : 'Hét hàng'}
+                                        <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider shadow-sm ${dish.isAvailable !== false ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`}>
+                                            {dish.isAvailable !== false ? 'Còn hàng' : 'Hết hàng'}
                                         </span>
                                     </div>
                                     {/* isAvailable overlay mock if needed */}
-                                    {false && (
+                                    {dish.isAvailable === false && (
                                         <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
                                             <span className="bg-white/90 text-textMain px-4 py-1.5 rounded-full text-xs font-black shadow-lg">HẾT HÀNG</span>
                                         </div>
@@ -237,49 +230,13 @@ const AdminMenu = () => {
                 )}
             </div>
 
-            {/* Pagination Footer */}
-            {filteredDishes.length > 0 && (
-                <div className="flex items-center justify-between mt-6 px-2">
-                    <p className="text-sm font-medium text-textSec">
-                        Hiển thị <span className="font-bold text-textMain">{Math.min(filteredDishes.length, (currentPage - 1) * ITEMS_PER_PAGE + 1)} - {Math.min(filteredDishes.length, currentPage * ITEMS_PER_PAGE)}</span> trên <span className="font-bold text-textMain">{filteredDishes.length}</span> món ăn
-                    </p>
-
-                    <div className="flex items-center gap-2">
-                        <button
-                            onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
-                            disabled={currentPage === 1}
-                            className="w-10 h-10 rounded-full flex items-center justify-center border border-gray-200 text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                        >
-                            <ChevronLeft size={18} />
-                        </button>
-
-                        {Array.from({ length: totalPages }).map((_, idx) => {
-                            const p = idx + 1;
-                            const isActive = p === currentPage;
-                            return (
-                                <button
-                                    key={p}
-                                    onClick={() => setCurrentPage(p)}
-                                    className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold transition-all ${isActive
-                                        ? "bg-primary text-white shadow-md shadow-primary/20"
-                                        : "hover:bg-gray-100 text-textMain"
-                                        }`}
-                                >
-                                    {p}
-                                </button>
-                            );
-                        })}
-
-                        <button
-                            onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
-                            disabled={currentPage === totalPages}
-                            className="w-10 h-10 rounded-full flex items-center justify-center border border-gray-200 text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                        >
-                            <ChevronRight size={18} />
-                        </button>
-                    </div>
-                </div>
-            )}
+            <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                totalItems={filteredDishes.length}
+                itemsPerPage={ITEMS_PER_PAGE}
+                onPageChange={setCurrentPage}
+            />
 
             {/* Modals */}
             <DishFormModal

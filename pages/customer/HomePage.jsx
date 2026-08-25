@@ -402,11 +402,16 @@ const HomePage = () => {
                     <img
                       src={dish.image}
                       alt={dish.name}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      className={`w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ${dish.isAvailable === false ? 'grayscale' : ''}`}
                     />
                     {dish.isBestSeller && (
                       <div className="absolute top-3 left-3 bg-primary/90 text-white text-[10px] font-bold px-2.5 py-1 rounded-full">
                         ⭐ Bán chạy
+                      </div>
+                    )}
+                    {dish.isAvailable === false && (
+                      <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                        <span className="bg-red-600 text-white px-4 py-1.5 rounded-full text-xs font-black shadow-lg uppercase">Hết hàng</span>
                       </div>
                     )}
                     <button
@@ -446,13 +451,19 @@ const HomePage = () => {
                         {fmt(dish.price)}
                       </span>
                       <button
+                        disabled={dish.isAvailable === false}
                         onClick={() => handleAdd(dish)}
-                        className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-bold transition-all active:scale-95 ${addedId === dish.id
-                            ? "bg-green-500 text-white"
-                            : "bg-primary text-white hover:bg-primaryDark shadow-md shadow-primary/20"
-                          }`}
+                        className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-bold transition-all active:scale-95 ${
+                          dish.isAvailable === false
+                            ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                            : addedId === dish.id
+                              ? "bg-green-500 text-white"
+                              : "bg-primary text-white hover:bg-primaryDark shadow-md shadow-primary/20"
+                        }`}
                       >
-                        {addedId === dish.id ? (
+                        {dish.isAvailable === false ? (
+                          "Hết hàng"
+                        ) : addedId === dish.id ? (
                           <>
                             <Check size={16} strokeWidth={3} /> Đã thêm!
                           </>

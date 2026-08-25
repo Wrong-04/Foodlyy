@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Trash2, Search, Filter, ChevronLeft, ChevronRight, User, Mail, Shield, ShieldAlert, Pencil, Check, X } from "lucide-react";
 import { dbService } from "../../lib/db";
+import Pagination from "../../components/admin/Pagination";
 
 
 const AdminUsers = () => {
@@ -134,7 +135,7 @@ const AdminUsers = () => {
                                         <td className="px-6 py-5">
                                             <div className="flex items-center gap-3">
                                                 <div className={`w-10 h-10 rounded-full flex items-center justify-center ${user.role === 'admin' ? 'bg-orange-100 text-primary' : 'bg-blue-100 text-blue-600'}`}>
-                                                    <UserIcon size={20} />
+                                                    <User size={20} />
                                                 </div>
                                                 <span className="font-bold text-textMain">{user.name}</span>
                                             </div>
@@ -222,46 +223,13 @@ const AdminUsers = () => {
                 </div>
             )}
 
-            {/* Pagination */}
-            {totalPages > 1 && (
-                <div className="flex items-center justify-between bg-white p-4 rounded-2xl border border-gray-100 shadow-sm">
-                    <p className="text-[10px] font-black text-textSec uppercase tracking-widest">
-                        Hiển thị <span className="text-primary">{(currentPage - 1) * ITEMS_PER_PAGE + 1}</span> -{" "}
-                        <span className="text-primary">{Math.min(currentPage * ITEMS_PER_PAGE, filteredUsers.length)}</span> của{" "}
-                        <span className="text-primary">{filteredUsers.length}</span> người dùng
-                    </p>
-                    <div className="flex gap-2">
-                        <button
-                            disabled={currentPage === 1}
-                            onClick={() => setCurrentPage((p) => p - 1)}
-                            className="p-2.5 rounded-xl border border-gray-100 hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-all hover:border-primary/30 group"
-                        >
-                            <ChevronLeft size={18} className="group-hover:-translate-x-0.5 transition-transform" />
-                        </button>
-                        <div className="flex gap-1.5">
-                            {[...Array(totalPages)].map((_, i) => (
-                                <button
-                                    key={i}
-                                    onClick={() => setCurrentPage(i + 1)}
-                                    className={`w-10 h-10 rounded-xl text-xs font-black transition-all ${currentPage === i + 1
-                                        ? "bg-primary text-white shadow-lg shadow-primary/20 scale-105"
-                                        : "bg-gray-50 text-textSec hover:bg-white hover:border-gray-200 border border-transparent"
-                                        }`}
-                                >
-                                    {i + 1}
-                                </button>
-                            ))}
-                        </div>
-                        <button
-                            disabled={currentPage === totalPages}
-                            onClick={() => setCurrentPage((p) => p + 1)}
-                            className="p-2.5 rounded-xl border border-gray-100 hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-all hover:border-primary/30 group"
-                        >
-                            <ChevronRight size={18} className="group-hover:translate-x-0.5 transition-transform" />
-                        </button>
-                    </div>
-                </div>
-            )}
+            <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                totalItems={filteredUsers.length}
+                itemsPerPage={ITEMS_PER_PAGE}
+                onPageChange={setCurrentPage}
+            />
         </div>
     );
 };
