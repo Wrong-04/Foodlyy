@@ -10,7 +10,8 @@ import {
     Minus,
     Check,
     Share2,
-    Info
+    Info,
+    ShoppingBag
 } from "lucide-react";
 import { dbService } from "../../lib/db";
 
@@ -24,15 +25,45 @@ const FoodDetailPage = () => {
     const [loading, setLoading] = useState(true);
     const [quantity, setQuantity] = useState(1);
     const [addedAnimating, setAddedAnimating] = useState(false);
+    const [ratingData, setRatingData] = useState({ average: 0, count: 0 });
+    const [salesCount, setSalesCount] = useState(0);
 
     useEffect(() => {
+        window.scrollTo(0, 0);
+        
         const fetchDish = async () => {
             try {
                 setLoading(true);
-                const dishes = await dbService.getDishes();
+                const [dishes, orders] = await Promise.all([
+                    dbService.getDishes(),
+                    dbService.getOrders()
+                ]);
                 const found = dishes.find(d => d.id === Number(dishId));
                 if (found) {
                     setDish(found);
+                    
+                    // Lọc các đơn hàng hoàn thành có chứa món này
+                    const completedOrdersWithDish = orders.filter(o => o.status === "Completed" && o.items && o.items.some(i => i.id === found.id));
+                    
+                    // Tính tổng số lượng món này đã bán
+                    let totalSold = 0;
+                    completedOrdersWithDish.forEach(o => {
+                        const item = o.items.find(i => i.id === found.id);
+                        if (item && item.quantity) {
+                            totalSold += item.quantity;
+                        }
+                    });
+                    setSalesCount(totalSold);
+
+                    // Tính toán rating
+                    const ratedOrders = completedOrdersWithDish.filter(o => o.rating > 0);
+                    if (ratedOrders.length > 0) {
+                        const sum = ratedOrders.reduce((acc, o) => acc + o.rating, 0);
+                        setRatingData({
+                            average: (sum / ratedOrders.length).toFixed(1),
+                            count: ratedOrders.length
+                        });
+                    }
                 }
             } catch (error) {
                 console.error("Failed to fetch dish:", error);
@@ -127,31 +158,39 @@ const FoodDetailPage = () => {
                         {/* Nutrition/Quick Info tags */}
                         <div className="grid grid-cols-3 gap-4">
                             <div className="bg-white p-4 rounded-2xl border border-gray-100 flex flex-col items-center gap-1 shadow-sm">
-                                <Flame className="text-orange-500" size={20} />
-                                <span className="text-xs text-textSec font-medium">Calo</span>
-                                <span className="text-sm font-bold">~450 kcal</span>
+                                <ShoppingBag className="text-orange-500" size={20} />
+                                <span className="text-xs text-textSec font-medium">Lượt bán</span>
+                                <span className="text-sm font-bold">{salesCount > 0 ? `${salesCount}+` : "Mới"}</span>
                             </div>
                             <div className="bg-white p-4 rounded-2xl border border-gray-100 flex flex-col items-center gap-1 shadow-sm">
                                 <Clock className="text-blue-500" size={20} />
-                                <span className="text-xs text-textSec font-medium">Giao hàng</span>
-                                <span className="text-sm font-bold">15-20 m</span>
+                                <span className="text-xs text-textSec font-medium">Chế biến</span>
+                                <span className="text-sm font-bold">10-15 p</span>
                             </div>
                             <div className="bg-white p-4 rounded-2xl border border-gray-100 flex flex-col items-center gap-1 shadow-sm">
-                                <Star className="text-yellow-500" size={20} fill="#f59e0b" />
+                                <Star className={ratingData.count > 0 ? "text-yellow-500" : "text-gray-300"} size={20} fill={ratingData.count > 0 ? "#f59e0b" : "currentColor"} />
                                 <span className="text-xs text-textSec font-medium">Đánh giá</span>
-                                <span className="text-sm font-bold">4.8 (120+)</span>
+                                <span className="text-sm font-bold">
+                                    {ratingData.count > 0 ? `${ratingData.average} (${ratingData.count})` : "Chưa có"}
+                                </span>
                             </div>
                         </div>
                     </div>
 
                     {/* Right: Info Section */}
                     <div className="flex flex-col h-full lg:pt-4">
-                        <div className="hidden lg:flex items-center gap-2 text-textSec text-sm mb-6">
-                            <button onClick={() => navigate('/')} className="hover:text-primary transition-colors">Trang chủ</button>
-                            <span>/</span>
-                            <button onClick={() => navigate('/menu')} className="hover:text-primary transition-colors">Thực đơn</button>
-                            <span>/</span>
-                            <span className="text-textMain font-medium">{dish.category}</span>
+                        <div className="hidden lg:flex items-center gap-4 mb-6">
+                            <button
+                                onClick={() => navigate(-1)}
+                                className="flex items-center gap-2 text-textSec hover:text-primary font-bold transition-colors group"
+                            >
+                                <div className="p-2 bg-white rounded-xl shadow-sm border border-gray-100 group-hover:bg-primary group-hover:text-white transition-all">
+                                    <ChevronLeft size={18} />
+                                </div>
+                                <span>Quay lại</span>
+                            </button>
+                            <div className="h-6 w-px bg-gray-200"></div>
+                            <span className="text-sm font-bold text-primary truncate max-w-[250px]">{dish.name}</span>
                         </div>
 
                         <div className="flex flex-col gap-4 mb-8">

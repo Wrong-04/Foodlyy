@@ -13,6 +13,7 @@ import {
     AlertCircle,
     Truck,
     ArrowRight,
+    Star,
 } from "lucide-react";
 import { useParams, useNavigate } from "react-router-dom";
 
@@ -28,6 +29,10 @@ const OrderDetailPage = () => {
     const [isCancelling, setIsCancelling] = useState(false);
     const [showCancelConfirm, setShowCancelConfirm] = useState(false);
     const [notification, setNotification] = useState(null);
+    const [rating, setRating] = useState(0);
+    const [hoverRating, setHoverRating] = useState(0);
+    const [feedback, setFeedback] = useState("");
+    const [isSubmittingRating, setIsSubmittingRating] = useState(false);
 
     useEffect(() => {
         const loadOrder = async () => {
@@ -70,6 +75,29 @@ const OrderDetailPage = () => {
             });
         } finally {
             setIsCancelling(false);
+        }
+    };
+
+    const handleSubmitRating = async () => {
+        if (!order || rating === 0) return;
+        setIsSubmittingRating(true);
+        try {
+            await dbService.updateOrder(order.id, { rating, feedback });
+            setOrder({ ...order, rating, feedback });
+            setNotification({
+                title: "Cảm ơn bạn!",
+                desc: "Đánh giá của bạn đã được gửi thành công.",
+                type: "success",
+            });
+        } catch (error) {
+            console.error("Failed to submit rating:", error);
+            setNotification({
+                title: "Thất bại",
+                desc: "Có lỗi xảy ra khi gửi đánh giá. Vui lòng thử lại sau.",
+                type: "error",
+            });
+        } finally {
+            setIsSubmittingRating(false);
         }
     };
 
@@ -237,6 +265,90 @@ const OrderDetailPage = () => {
                                 </div>
                             </div>
                         </div>
+
+                        {/* Rating Card */}
+                        {(order.status === "Completed" || order.rating) && (
+                            <div className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-gray-100">
+                                <div className="flex items-center gap-3 mb-6 pb-4 border-b border-gray-50">
+                                    <div className="w-10 h-10 bg-yellow-100 rounded-xl flex items-center justify-center">
+                                        <Star className="text-yellow-500" size={20} fill="currentColor" />
+                                    </div>
+                                    <h2 className="text-xl font-black text-textMain uppercase tracking-wider">Đánh giá đơn hàng</h2>
+                                </div>
+
+                                {order.rating ? (
+                                    <div className="space-y-4">
+                                        <div className="flex items-center gap-2">
+                                            {[1, 2, 3, 4, 5].map((star) => (
+                                                <Star
+                                                    key={star}
+                                                    size={24}
+                                                    className={`${star <= order.rating ? "text-yellow-400 fill-yellow-400" : "text-gray-200"}`}
+                                                />
+                                            ))}
+                                        </div>
+                                        {order.feedback && (
+                                            <div className="p-4 bg-gray-50 rounded-2xl text-textSec font-medium italic border border-gray-100">
+                                                "{order.feedback}"
+                                            </div>
+                                        )}
+                                        <p className="text-xs text-textSec font-bold">Cảm ơn bạn đã để lại đánh giá!</p>
+                                    </div>
+                                ) : (
+                                    <div className="space-y-6">
+                                        <div>
+                                            <label className="block text-sm font-bold text-textMain mb-3">
+                                                Chất lượng món ăn thế nào? <span className="text-red-500">*</span>
+                                            </label>
+                                            <div className="flex items-center gap-3">
+                                                {[1, 2, 3, 4, 5].map((star) => (
+                                                    <button
+                                                        key={star}
+                                                        type="button"
+                                                        onClick={() => setRating(star)}
+                                                        onMouseEnter={() => setHoverRating(star)}
+                                                        onMouseLeave={() => setHoverRating(0)}
+                                                        className="focus:outline-none transition-transform hover:scale-110 active:scale-95"
+                                                    >
+                                                        <Star
+                                                            size={32}
+                                                            className={`${star <= (hoverRating || rating)
+                                                                    ? "text-yellow-400 fill-yellow-400 drop-shadow-sm"
+                                                                    : "text-gray-200"
+                                                                } transition-colors duration-200`}
+                                                        />
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <label className="block text-sm font-bold text-textMain mb-3">
+                                                Bạn có góp ý gì thêm không? (Không bắt buộc)
+                                            </label>
+                                            <textarea
+                                                value={feedback}
+                                                onChange={(e) => setFeedback(e.target.value)}
+                                                placeholder="Món ăn rất ngon, giao hàng nhanh..."
+                                                className="w-full h-24 p-4 bg-gray-50 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all resize-none text-sm font-medium placeholder:text-gray-400"
+                                            />
+                                        </div>
+
+                                        <button
+                                            onClick={handleSubmitRating}
+                                            disabled={rating === 0 || isSubmittingRating}
+                                            className="w-full h-12 bg-primary text-white font-black rounded-2xl shadow-lg shadow-primary/30 hover:bg-primaryDark disabled:opacity-50 disabled:shadow-none transition-all flex items-center justify-center gap-2"
+                                        >
+                                            {isSubmittingRating ? (
+                                                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                                            ) : (
+                                                <>GỬI ĐÁNH GIÁ</>
+                                            )}
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+                        )}
                     </div>
 
                     {/* Sidebar */}

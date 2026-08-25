@@ -10,6 +10,7 @@ import {
   Filter,
   ChevronLeft,
   ChevronRight,
+  Star,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { dbService } from "../../lib/db";
@@ -211,6 +212,11 @@ const AdminOrders = () => {
                     </td>
                     <td className="px-5 py-5 font-bold text-textMain">
                       {o.customer}
+                      {o.rating && (
+                        <div className="flex items-center gap-1 mt-1 text-yellow-500 bg-yellow-50 w-fit px-1.5 py-0.5 rounded text-[10px]">
+                           <Star size={10} fill="currentColor" /> {o.rating}
+                        </div>
+                      )}
                     </td>
                     <td className="px-5 py-5 font-bold text-textSec">
                       {o.deliveryOption === "takeaway"
