@@ -52,17 +52,34 @@ const Navbar = () => {
           </span>
         </div>
 
+        {/* Center: Desktop Nav */}
+        <div className="hidden md:flex items-center gap-8">
+          {NAV_LINKS.map((link) => (
+            <button
+              key={link.path}
+              onClick={() => navigate(link.path)}
+              className={`text-sm font-bold transition-colors ${
+                isActive(link.path)
+                  ? "text-primary"
+                  : "text-textSec hover:text-primary"
+              }`}
+            >
+              {link.label}
+            </button>
+          ))}
+        </div>
+
         {/* Right side */}
         <div className="flex items-center gap-3">
-          {/* Cart */}
           <button
             onClick={() => navigate("/cart")}
-            className="relative flex items-center gap-2 px-4 py-2 rounded-xl font-semibold text-sm transition-all bg-primary/10 text-primary hover:bg-primary/20"
+            className="relative flex items-center gap-2 px-4 py-2 rounded-xl font-bold text-sm transition-all bg-primary/10 text-primary hover:bg-primary/20 hover:scale-105 active:scale-95"
           >
             <ShoppingCart size={20} />
-            <span className="hidden sm:inline">Giỏ hàng</span>
+            <span className="hidden sm:inline">Giỏ hàng ({cartCount})</span>
+            {/* Mobile badge */}
             {cartCount > 0 && (
-              <span className="absolute -top-1 -right-1 w-5 h-5 bg-primary text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+              <span className="sm:hidden absolute -top-1 -right-1 w-5 h-5 bg-primary text-white text-[10px] font-bold rounded-full flex items-center justify-center animate-in zoom-in">
                 {cartCount > 9 ? "9+" : cartCount}
               </span>
             )}
