@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import {
   Check,
   X,
@@ -44,13 +45,13 @@ const STATUS_CONFIG = {
 };
 
 const AdminBookingPage = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [bookings, setBookings] = useState([]);
   const [tables, setTables] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [statusFilter, setStatusFilter] = useState(
-    "all",
-  );
+  const [statusFilter, setStatusFilter] = useState("all");
   const [tableFilter, setTableFilter] = useState("all");
+  const periodFilter = searchParams.get("period") || "all";
   const [isLoading, setIsLoading] = useState(true);
 
   const [showRejectModal, setShowRejectModal] = useState(false);
@@ -124,12 +125,21 @@ const AdminBookingPage = () => {
       statusFilter === "all" || booking.status === statusFilter;
     const matchesTable =
       tableFilter === "all" || booking.tableId === tableFilter;
-    return matchesSearch && matchesStatus && matchesTable;
+    const matchesPeriod = () => {
+      if (periodFilter === "all") return true;
+      if (!booking.time) return false;
+      const hour = parseInt(booking.time.split(":")[0], 10);
+      if (periodFilter === "morning" || periodFilter === "sang") return hour >= 8 && hour < 12;
+      if (periodFilter === "afternoon" || periodFilter === "chieu") return hour >= 12 && hour < 17;
+      if (periodFilter === "evening" || periodFilter === "toi") return hour >= 17 && hour <= 23;
+      return true;
+    };
+    return matchesSearch && matchesStatus && matchesTable && matchesPeriod();
   });
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchQuery, statusFilter, tableFilter]);
+  }, [searchQuery, statusFilter, tableFilter, periodFilter]);
 
   const totalPages = Math.ceil(filteredBookings.length / ITEMS_PER_PAGE);
   const paginatedBookings = filteredBookings.slice(
@@ -188,6 +198,28 @@ const AdminBookingPage = () => {
               <option value="completed">Đã hoàn thành</option>
               <option value="cancelled">Đã hủy</option>
               <option value="no_show">Khách không đến (Quá giờ)</option>
+            </select>
+          </div>
+
+          <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-xl px-3 h-11 shadow-sm">
+            <Clock size={14} className="text-gray-400" />
+            <select
+              value={periodFilter}
+              onChange={(e) => {
+                const val = e.target.value;
+                setSearchParams((prev) => {
+                  const next = new URLSearchParams(prev);
+                  if (val === "all") next.delete("period");
+                  else next.set("period", val);
+                  return next;
+                });
+              }}
+              className="bg-transparent border-none text-sm font-bold text-textMain outline-none min-w-[124px]"
+            >
+              <option value="all">Tất cả khung giờ</option>
+              <option value="morning">Sáng (08:00 - 12:00)</option>
+              <option value="afternoon">Chiều (12:00 - 17:00)</option>
+              <option value="evening">Tối (17:00 - 23:00)</option>
             </select>
           </div>
 

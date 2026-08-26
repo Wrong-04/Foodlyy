@@ -12,7 +12,7 @@ import {
   CreditCard,
   Check,
 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { dbService } from "../../lib/db";
 
 import { useApp } from "../../context/AppContext";
@@ -77,19 +77,39 @@ const WEEKDAY_SLOTS = [
   "21:00",
   "21:30",
 ];
-const PERIOD_RANGES = { morning: [8, 12], afternoon: [12, 17], evening: [17, 24] };
+const PERIOD_RANGES = {
+  morning: [8, 12],
+  afternoon: [12, 17],
+  evening: [17, 24],
+};
+
+const normalizePeriod = (val) => {
+  if (!val) return "evening";
+  const lower = val.toLowerCase().trim();
+  if (lower === "sang" || lower === "sáng" || lower === "morning") return "morning";
+  if (lower === "chieu" || lower === "chiều" || lower === "afternoon") return "afternoon";
+  if (lower === "toi" || lower === "tối" || lower === "evening") return "evening";
+  return "evening";
+};
 
 const BookingPage = () => {
   const { currentUser } = useApp();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const selectedTimePeriod = normalizePeriod(
+    searchParams.get("period") ||
+    searchParams.get("shift") ||
+    searchParams.get("session") ||
+    searchParams.get("timePeriod")
+  );
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
-  const [selectedTimePeriod, setSelectedTimePeriod] = useState("evening");
+
   const [formData, setFormData] = useState({
-    date: "",
-    time: "",
-    guests: 2,
+    date: searchParams.get("date") || "",
+    time: searchParams.get("time") || "",
+    guests: Number(searchParams.get("guests")) || 2,
     name: currentUser?.name || "",
     phone: "",
     email: currentUser?.email || "",
@@ -122,7 +142,9 @@ const BookingPage = () => {
           .map((b) => b.tableId);
         setTakenTableIds(taken);
         if (formData.assignedTable) {
-          const currentTable = allTables.find((t) => t.id === formData.assignedTable?.id);
+          const currentTable = allTables.find(
+            (t) => t.id === formData.assignedTable?.id,
+          );
           const stillValid =
             currentTable &&
             currentTable.status !== "maintenance" &&
@@ -141,13 +163,20 @@ const BookingPage = () => {
     return () => clearTimeout(id);
   }, [formData.date, formData.time, formData.guests]);
 
-  const getTimeSlotsByPeriod = (
-    period,
-  ) => {
+  const handlePeriodChange = (period) => {
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      next.set("period", period);
+      return next;
+    });
+  };
+
+  const getTimeSlotsByPeriod = (period) => {
     if (!formData.date) return [];
     const day = new Date(formData.date).getDay();
     const slots = day === 0 || day === 6 ? WEEKEND_SLOTS : WEEKDAY_SLOTS;
-    const [start, end] = PERIOD_RANGES[period];
+    const range = PERIOD_RANGES[period] || PERIOD_RANGES.evening;
+    const [start, end] = range;
 
     const today = new Date().toISOString().split("T")[0];
     const isToday = formData.date === today;
@@ -263,11 +292,9 @@ const BookingPage = () => {
               {[1, 2, 3].map((s) => (
                 <div
                   key={s}
-                  className={`relative z-10 flex flex-col items-center gap-2 ${step >= s ? "text-primary" : "text-gray-400"}`}
-                >
+                  className={`relative z-10 flex flex-col items-center gap-2 ${step >= s ? "text-primary" : "text-gray-400"}`}>
                   <div
-                    className={`w-10 h-10 rounded-full flex items-center justify-center font-bold border-4 transition-colors duration-300 ${step >= s ? "bg-primary text-white border-primary/20" : "bg-white border-gray-200"}`}
-                  >
+                    className={`w-10 h-10 rounded-full flex items-center justify-center font-bold border-4 transition-colors duration-300 ${step >= s ? "bg-primary text-white border-primary/20" : "bg-white border-gray-200"}`}>
                     {s}
                   </div>
                   <span className="text-xs font-bold uppercase tracking-wider">
@@ -299,8 +326,7 @@ const BookingPage = () => {
                           guests: Math.max(1, p.guests - 1),
                         }))
                       }
-                      className="w-12 h-12 rounded-full border-2 border-gray-200 flex items-center justify-center text-gray-600 hover:border-primary hover:text-primary transition-colors"
-                    >
+                      className="w-12 h-12 rounded-full border-2 border-gray-200 flex items-center justify-center text-gray-600 hover:border-primary hover:text-primary transition-colors">
                       <Minus size={20} />
                     </button>
                     <div className="text-3xl font-extrabold text-gray-900 w-16 text-center">
@@ -314,8 +340,7 @@ const BookingPage = () => {
                           guests: Math.min(20, p.guests + 1),
                         }))
                       }
-                      className="w-12 h-12 rounded-full border-2 border-gray-200 flex items-center justify-center text-gray-600 hover:border-primary hover:text-primary transition-colors"
-                    >
+                      className="w-12 h-12 rounded-full border-2 border-gray-200 flex items-center justify-center text-gray-600 hover:border-primary hover:text-primary transition-colors">
                       <Plus size={20} />
                     </button>
                   </div>
@@ -379,11 +404,8 @@ const BookingPage = () => {
                           <button
                             key={period.id}
                             type="button"
-                            onClick={() =>
-                              setSelectedTimePeriod(period.id)
-                            }
-                            className={`flex-1 py-3 px-4 rounded-xl border-2 font-bold text-sm transition-all ${selectedTimePeriod === period.id ? "border-primary bg-primary text-white shadow-md" : "border-gray-200 text-gray-600 hover:border-primary/50"}`}
-                          >
+                            onClick={() => handlePeriodChange(period.id)}
+                            className={`flex-1 py-3 px-4 rounded-xl border-2 font-bold text-sm transition-all ${selectedTimePeriod === period.id ? "border-primary bg-primary text-white shadow-md" : "border-gray-200 text-gray-600 hover:border-primary/50"}`}>
                             <div>{period.label}</div>
                             <div className="text-[10px] opacity-80 font-normal">
                               {period.time}
@@ -398,8 +420,7 @@ const BookingPage = () => {
                               key={time}
                               type="button"
                               onClick={() => setFormData({ ...formData, time })}
-                              className={`h-11 rounded-lg border-2 font-bold transition-all text-sm ${formData.time === time ? "border-primary bg-primary text-white shadow-md shadow-primary/30" : "border-gray-200 text-gray-600 hover:border-primary/50 hover:bg-primary/5"}`}
-                            >
+                              className={`h-11 rounded-lg border-2 font-bold transition-all text-sm ${formData.time === time ? "border-primary bg-primary text-white shadow-md shadow-primary/30" : "border-gray-200 text-gray-600 hover:border-primary/50 hover:bg-primary/5"}`}>
                               {time}
                             </button>
                           ),
@@ -430,7 +451,8 @@ const BookingPage = () => {
                     <div className="text-center py-8 text-amber-600 bg-amber-50 rounded-xl border border-amber-200">
                       <p className="font-bold mb-2">😔 Không còn bàn trống</p>
                       <p className="text-sm">
-                        Tất cả bàn đã được đặt vào thời gian này. Vui lòng chọn khung giờ khác.
+                        Tất cả bàn đã được đặt vào thời gian này. Vui lòng chọn
+                        khung giờ khác.
                       </p>
                     </div>
                   ) : (
@@ -453,16 +475,15 @@ const BookingPage = () => {
                                 assignedTable: table,
                               }))
                             }
-                            className={`p-4 rounded-xl border-2 transition-all relative overflow-hidden ${isDisabled ? "bg-gray-50 border-gray-100 opacity-60 cursor-not-allowed" : isSelected ? "border-primary bg-primary/5 cursor-pointer shadow-sm shadow-primary/10" : "border-gray-200 cursor-pointer hover:border-primary/40 bg-white"}`}
-                          >
+                            className={`p-4 rounded-xl border-2 transition-all relative overflow-hidden ${isDisabled ? "bg-gray-50 border-gray-100 opacity-60 cursor-not-allowed" : isSelected ? "border-primary bg-primary/5 cursor-pointer shadow-sm shadow-primary/10" : "border-gray-200 cursor-pointer hover:border-primary/40 bg-white"}`}>
                             {isDisabled && (
                               <div className="absolute inset-0 bg-white/40 flex items-center justify-center z-10 backdrop-blur-[1px]">
                                 <span className="bg-white/90 text-gray-500 text-[10px] font-bold px-2 py-1 rounded-full shadow-sm">
                                   {table.status === "maintenance"
                                     ? "Bảo trì"
                                     : takenTableIds.includes(table.id)
-                                    ? "Đã đặt"
-                                    : `Cần ${formData.guests} chỗ`}
+                                      ? "Đã đặt"
+                                      : `Cần ${formData.guests} chỗ`}
                                 </span>
                               </div>
                             )}
@@ -490,8 +511,7 @@ const BookingPage = () => {
                   disabled={
                     !formData.date || !formData.time || !formData.assignedTable
                   }
-                  className="w-full h-14 bg-primary text-white font-bold rounded-xl text-lg hover:bg-primaryDark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                >
+                  className="w-full h-14 bg-primary text-white font-bold rounded-xl text-lg hover:bg-primaryDark transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
                   {formData.assignedTable
                     ? "Tiếp tục điền thông tin"
                     : "Chọn bàn để tiếp tục"}
@@ -602,14 +622,12 @@ const BookingPage = () => {
                     setError("");
                     setStep(1);
                   }}
-                  className="w-1/3 h-14 bg-gray-100 text-gray-700 font-bold rounded-xl text-lg hover:bg-gray-200 transition-colors"
-                >
+                  className="w-1/3 h-14 bg-gray-100 text-gray-700 font-bold rounded-xl text-lg hover:bg-gray-200 transition-colors">
                   Quay lại
                 </button>
                 <button
                   onClick={handleGoToReview}
-                  className="w-2/3 h-14 bg-primary text-white font-bold rounded-xl text-lg hover:bg-primaryDark transition-colors"
-                >
+                  className="w-2/3 h-14 bg-primary text-white font-bold rounded-xl text-lg hover:bg-primaryDark transition-colors">
                   Xem lại thông tin
                 </button>
               </div>
@@ -638,12 +656,8 @@ const BookingPage = () => {
                     ["Điện thoại", formData.phone],
                   ].map(([label, value]) => (
                     <React.Fragment key={label}>
-                      <div className="text-gray-500">
-                        {label}
-                      </div>
-                      <div
-                        className="font-bold text-gray-900 text-right"
-                      >
+                      <div className="text-gray-500">{label}</div>
+                      <div className="font-bold text-gray-900 text-right">
                         {value}
                       </div>
                     </React.Fragment>
@@ -661,7 +675,9 @@ const BookingPage = () => {
                 </div>
               </div>
               <div className="mb-8">
-                <h3 className="font-bold text-gray-900 mb-4">Phương thức thanh toán</h3>
+                <h3 className="font-bold text-gray-900 mb-4">
+                  Phương thức thanh toán
+                </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {[
                     {
@@ -677,8 +693,7 @@ const BookingPage = () => {
                   ].map((option) => (
                     <label
                       key={option.value}
-                      className={`flex items-center gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all ${formData.paymentMethod === option.value ? "border-primary bg-orange-50/50" : "border-gray-200 hover:border-gray-300"}`}
-                    >
+                      className={`flex items-center gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all ${formData.paymentMethod === option.value ? "border-primary bg-orange-50/50" : "border-gray-200 hover:border-gray-300"}`}>
                       <input
                         type="radio"
                         name="payment"
@@ -694,8 +709,7 @@ const BookingPage = () => {
                         className="text-primary focus:ring-primary w-5 h-5"
                       />
                       <span
-                        className={`font-semibold flex items-center gap-2 ${option.disabled ? "text-gray-400" : "text-gray-800"}`}
-                      >
+                        className={`font-semibold flex items-center gap-2 ${option.disabled ? "text-gray-400" : "text-gray-800"}`}>
                         <CreditCard size={18} /> {option.label}
                       </span>
                     </label>
@@ -711,15 +725,13 @@ const BookingPage = () => {
                 <button
                   onClick={() => setStep(2)}
                   disabled={isSubmitting}
-                  className="w-1/3 h-14 bg-gray-100 text-gray-700 font-bold rounded-xl text-lg hover:bg-gray-200 transition-colors disabled:opacity-50"
-                >
+                  className="w-1/3 h-14 bg-gray-100 text-gray-700 font-bold rounded-xl text-lg hover:bg-gray-200 transition-colors disabled:opacity-50">
                   Quay lại
                 </button>
                 <button
                   onClick={handleSubmit}
                   disabled={isSubmitting}
-                  className="w-2/3 h-14 flex items-center justify-center gap-2 bg-black text-white font-bold rounded-xl text-lg hover:bg-gray-900 transition-colors shadow-xl shadow-black/20 disabled:opacity-70 disabled:cursor-wait"
-                >
+                  className="w-2/3 h-14 flex items-center justify-center gap-2 bg-black text-white font-bold rounded-xl text-lg hover:bg-gray-900 transition-colors shadow-xl shadow-black/20 disabled:opacity-70 disabled:cursor-wait">
                   {isSubmitting ? (
                     <>
                       <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />{" "}
@@ -752,20 +764,17 @@ const BookingPage = () => {
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <button
                   onClick={() => navigate("/bookings")}
-                  className="px-8 py-4 bg-primary text-white font-bold rounded-xl hover:bg-primaryDark transition-colors shadow-lg shadow-primary/20"
-                >
+                  className="px-8 py-4 bg-primary text-white font-bold rounded-xl hover:bg-primaryDark transition-colors shadow-lg shadow-primary/20">
                   Xem đặt chỗ của tôi
                 </button>
                 <button
                   onClick={() => window.location.reload()}
-                  className="px-8 py-4 bg-gray-100 text-gray-800 font-bold rounded-xl hover:bg-gray-200 transition-colors"
-                >
+                  className="px-8 py-4 bg-gray-100 text-gray-800 font-bold rounded-xl hover:bg-gray-200 transition-colors">
                   Đặt thêm bàn khác
                 </button>
                 <button
                   onClick={() => navigate("/")}
-                  className="px-8 py-4 border-2 border-gray-200 text-gray-700 font-bold rounded-xl hover:border-primary hover:text-primary transition-colors"
-                >
+                  className="px-8 py-4 border-2 border-gray-200 text-gray-700 font-bold rounded-xl hover:border-primary hover:text-primary transition-colors">
                   Quay lại trang chủ
                 </button>
               </div>
